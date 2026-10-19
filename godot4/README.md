@@ -1,6 +1,6 @@
 # Godot Remote for Godot 4.7.2
 
-Godot 4向けのサーバーアドオンと、新しいAndroid／デスクトップクライアントです。標準GodotのGDScript APIで実装しているため、エンジン本体やC++ライブラリのビルドは不要です。Godot 4.7.2で検証しています。
+Godot 4向けのサーバーアドオンと、新しいiPhone／Android／デスクトップクライアントです。標準GodotのGDScript APIで実装しているため、エンジン本体やC++ライブラリのビルドは不要です。Godot 4.7.2で検証しています。
 
 旧Godot 3版のネイティブモジュールを全機能移植したものではありません。基本的な遠隔操作を新しい通信方式で実装した開発版です。旧クライアント・旧APIとは互換性がありません。
 
@@ -51,6 +51,45 @@ USB経由では次を実行し、クライアントの接続先を `127.0.0.1:22
 adb reverse tcp:22766 tcp:22766
 ```
 
+## iPhone
+
+`iOS` エクスポートプリセットを追加しています。Bundle IDは `com.shinriyo.godotremote4`、署名チームは `R8W4W3W2S5` です。iPhone用ARM64ビルド、既存の開発用プロファイルによるオフライン署名に対応します。
+
+1. Mac側のGodotプロジェクトに上記サーバーアドオンを導入し、ゲームを実行します。
+2. 同じWi-Fiに接続したiPhoneで **Godot Remote 4** を開きます。
+3. ローカルネットワークへのアクセスを求められたら許可します。
+4. MacのIPアドレス（例: `192.168.1.20`）とポート `22766` を入力し、Connectを押します。
+
+iPhoneから接続する場合の `127.0.0.1` はiPhone自身を指すため、Macのアドレスを使用してください。初回の許可操作中にタイムアウトした場合は、Connectを押し直してください。許可を拒否した場合は、iPhoneの設定でこのアプリの「ローカルネットワーク」を有効にします。ADB転送はAndroid専用です。
+
+縦・横画面のセーフエリアを考慮し、接続操作のタップ領域を確保しています。接続先アドレスとポートは端末に保存しますが、パスワードは保存しません。アプリをバックグラウンドにすると切断し、Mac側の入力が押されたまま残らないようにします。復帰時はConnectで再接続してください。
+
+### 再ビルドと開発用インストール
+
+MacにXcodeとGodot 4.7.2のiOSエクスポートテンプレートが必要です。
+
+```sh
+sh scripts/export_ios.sh
+```
+
+このスクリプトはXcodeプロジェクトと署名なし実機用アプリを `build/` に生成します。Appleへのプロビジョニング更新は行いません。
+
+既存の対象端末入り開発用プロファイルと、Keychainにある有効な署名証明書を使う場合:
+
+```sh
+python3 scripts/sign_ios.py \
+  --app build/ios-derived/Build/Products/Debug-iphoneos/GodotRemote4.app \
+  --profile /path/to/existing.mobileprovision \
+  --identity CERTIFICATE_SHA1 \
+  --device IPHONE_UDID \
+  --output build/ios-device
+
+xcrun devicectl device install app --device IPHONE_UDID \
+  build/ios-device/Payload/GodotRemote4.app
+```
+
+手動署名スクリプトは、所属チーム・Bundle ID・プロファイル有効期限・証明書・対象端末を照合します。既存プロファイルと証明書を使うだけで、新規登録・証明書発行は行いません。開発用IPAは `build/ios-device/GodotRemote4.ipa` です。プロファイルに含まれる端末専用で、App StoreやTestFlight向けではありません。開発用署名の有効期限が切れた場合は再署名が必要です。
+
 ## 確認用サーバー
 
 `demo_server.tscn` を実行すると、タッチで円が移動するサーバー画面が起動します。別のクライアントから接続して、画面転送と入力を確認できます。
@@ -82,7 +121,9 @@ GodotRemote.send_user_data("score", 100)
 | Wi-Fi実機接続、実画面キャプチャ、実機センサー、USB経由接続 | 実機／実描画確認が必要 |
 | UDP自動検出、H.264、ジョイパッド転送 | 未移植 |
 | カスタム入力シーン転送、旧通知／統計UI、旧API互換 | 未移植 |
-| iOSパッケージ、ストア公開 | 未設定 |
+| iPhone用アプリ | ARM64ビルド・開発用署名・iPhone 15 Pro Maxへのインストールを確認、実操作は未検証 |
+| iPhone向けUI | 縦横レイアウト・セーフエリア計算・タッチ重複防止をヘッドレス検証 |
+| App Store／TestFlight公開 | 未設定 |
 
 ## ヘッドレス検証
 
@@ -91,6 +132,7 @@ godot --headless --audio-driver Dummy --path . --script res://tests/compile.gd
 godot --headless --audio-driver Dummy --path . --script res://tests/integration.gd
 godot --headless --audio-driver Dummy --path . --quit-after 3
 python3 tests/plugin_lifecycle.py /path/to/godot
+godot --headless --audio-driver Dummy --path . --script res://tests/mobile_ui.gd
 ```
 
 通信テストはローカルホストの24766番ポートを使用します。ヘッドレス環境では画面キャプチャを行わず、合成画像をJPEGに変換して実際のTCP接続で送受信します。これによって画像転送の検証と、GPUによる画面キャプチャの実機検証を区別しています。

@@ -9,17 +9,24 @@ var port := SpinBox.new()
 var password := LineEdit.new()
 var connect_button := Button.new()
 var _active_pointers := {}
+var _safe_margin := MarginContainer.new()
 
 func _ready() -> void:
 	add_child(client)
 	DisplayServer.screen_set_keep_on(true)
+	if OS.has_feature("mobile"):
+		get_window().content_scale_size = Vector2i(390, 390)
+		get_window().content_scale_aspect = Window.CONTENT_SCALE_ASPECT_EXPAND
+	add_child(_safe_margin)
+	_safe_margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var layout := VBoxContainer.new()
-	add_child(layout)
-	layout.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_safe_margin.add_child(layout)
+	get_viewport().size_changed.connect(_update_safe_area)
+	_update_safe_area.call_deferred()
 	var toolbar := HFlowContainer.new()
 	layout.add_child(toolbar)
 	host.placeholder_text = "PC IP address"
-	host.text = "127.0.0.1"
+	host.text = "" if OS.has_feature("mobile") else "127.0.0.1"
 	host.custom_minimum_size.x = 200
 	toolbar.add_child(host)
 	port.min_value = 1024
@@ -37,7 +44,7 @@ func _ready() -> void:
 	disconnect_button.text = "Disconnect"
 	disconnect_button.pressed.connect(func(): client.disconnect_from_host())
 	toolbar.add_child(disconnect_button)
-	status.text = "Enter the PC address (same Wi-Fi), or use 127.0.0.1 with adb reverse."
+	status.text = "Enter the Mac/PC IP address on the same Wi-Fi."
 	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	layout.add_child(status)
 	screen.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -45,15 +52,29 @@ func _ready() -> void:
 	screen.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	screen.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	layout.add_child(screen)
+	for control in [host, port, password, connect_button, disconnect_button]:
+		control.custom_minimum_size.y = 48
+	var saved := ConfigFile.new()
+	if saved.load("user://connection.cfg") == OK:
+		host.text = saved.get_value("connection", "host", host.text)
+		port.value = saved.get_value("connection", "port", port.value)
 	client.connected.connect(func(): status.text = "Connected — waiting for video"; connect_button.disabled = false)
 	client.disconnected.connect(func(reason): status.text = reason; screen.texture = null; _active_pointers.clear(); connect_button.disabled = false)
 	client.frame_received.connect(_frame_received)
 
 func _connect_pressed() -> void:
+	if host.text.strip_edges().is_empty():
+		status.text = "Enter the Mac/PC IP address first."
+		return
+	var saved := ConfigFile.new()
+	saved.set_value("connection", "host", host.text.strip_edges())
+	saved.set_value("connection", "port", int(port.value))
+	saved.save("user://connection.cfg")
 	var error := client.connect_to_host(host.text.strip_edges(), int(port.value), password.text)
 	status.text = "Connecting…" if error == OK else error_string(error)
 	connect_button.disabled = error == OK
 	get_viewport().gui_release_focus()
+	DisplayServer.virtual_keyboard_hide()
 
 func _frame_received(image: Image) -> void:
 	if screen.texture is ImageTexture and screen.texture.get_size() == Vector2(image.get_size()):
@@ -71,6 +92,10 @@ func _image_rect() -> Rect2:
 	return Rect2(screen.global_position + (screen.size - shown) * 0.5, shown)
 
 func _input(event: InputEvent) -> void:
+	# GUI buttons need emulated mouse events on mobile; do not forward them
+	# alongside the original touch event to the remote game.
+	if event is InputEventMouse and event.device == InputEvent.DEVICE_ID_EMULATION:
+		return
 	if not client.authenticated or not screen.texture:
 		return
 	var rect := _image_rect()
@@ -101,3 +126,25 @@ func _input(event: InputEvent) -> void:
 		return
 	client.send_input(event, rect)
 	get_viewport().set_input_as_handled()
+
+func _update_safe_area() -> void:
+	var insets := Vector4.ZERO
+	if OS.has_feature("mobile"):
+		var safe := Rect2(DisplayServer.get_display_safe_area())
+		var window_size := Vector2(DisplayServer.window_get_size())
+		insets = safe_area_insets(safe, window_size, size)
+	_safe_margin.add_theme_constant_override("margin_left", int(insets.x) + 8)
+	_safe_margin.add_theme_constant_override("margin_top", int(insets.y) + 8)
+	_safe_margin.add_theme_constant_override("margin_right", int(insets.z) + 8)
+	_safe_margin.add_theme_constant_override("margin_bottom", int(insets.w) + 8)
+
+static func safe_area_insets(safe: Rect2, window_size: Vector2, logical_size: Vector2) -> Vector4:
+	if window_size.x <= 0 or window_size.y <= 0 or not safe.has_area():
+		return Vector4.ZERO
+	var ratio := logical_size / window_size
+	return Vector4(maxf(0, safe.position.x) * ratio.x, maxf(0, safe.position.y) * ratio.y,
+		maxf(0, window_size.x - safe.end.x) * ratio.x, maxf(0, window_size.y - safe.end.y) * ratio.y)
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_PAUSED:
+		client.disconnect_from_host("Disconnected while app is in background")
