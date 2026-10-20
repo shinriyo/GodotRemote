@@ -17,6 +17,7 @@ var _active_pointers := {}
 var _safe_margin := MarginContainer.new()
 var settings_button := Button.new()
 var _settings_controls: Array[Control] = []
+var license_panel := PanelContainer.new()
 
 func _ready() -> void:
 	add_child(client)
@@ -65,6 +66,11 @@ func _ready() -> void:
 	disconnect_button.text = "Disconnect"
 	disconnect_button.pressed.connect(func(): client.disconnect_from_host())
 	toolbar.add_child(disconnect_button)
+	var licenses_button := Button.new()
+	licenses_button.text = "About / Licenses"
+	licenses_button.custom_minimum_size.y = 48
+	licenses_button.pressed.connect(func(): license_panel.show(); get_viewport().gui_release_focus())
+	toolbar.add_child(licenses_button)
 	status.text = "Enter the Mac/PC IP address on the same Wi-Fi."
 	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	layout.add_child(status)
@@ -90,11 +96,39 @@ func _ready() -> void:
 	client.connected.connect(func(): status.text = "Connected — waiting for video"; connect_button.disabled = false; _show_settings(false))
 	client.disconnected.connect(func(reason): status.text = reason; screen.texture = null; _active_pointers.clear(); connect_button.disabled = false; _show_settings(true))
 	client.frame_received.connect(_frame_received)
+	_build_license_panel()
+
+func _build_license_panel() -> void:
+	add_child(license_panel)
+	license_panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var margin := MarginContainer.new()
+	license_panel.add_child(margin)
+	for edge in ["left", "right", "top", "bottom"]:
+		margin.add_theme_constant_override("margin_" + edge, 24)
+	var column := VBoxContainer.new()
+	margin.add_child(column)
+	var heading := Label.new()
+	heading.text = ProjectSettings.get_setting("application/config/name")
+	heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	column.add_child(heading)
+	var notices := RichTextLabel.new()
+	notices.bbcode_enabled = false
+	notices.selection_enabled = true
+	notices.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	notices.text = preload("res://license_notices.gd").full_text()
+	column.add_child(notices)
+	var close := Button.new()
+	close.text = "Close"
+	close.custom_minimum_size.y = 48
+	close.pressed.connect(func(): license_panel.hide(); get_viewport().gui_release_focus())
+	column.add_child(close)
+	license_panel.hide()
+
 
 func _show_settings(show_panel: bool) -> void:
 	for control in _settings_controls:
 		control.visible = show_panel
-	_safe_margin.add_theme_constant_override("margin_top", int(_top_inset()) + (60 if show_panel and client.authenticated else 8))
+	_update_safe_area()
 	settings_button.visible = client.authenticated
 	settings_button.text = "Hide" if show_panel else "Settings"
 	get_viewport().gui_release_focus()
@@ -134,7 +168,7 @@ func _input(event: InputEvent) -> void:
 	# alongside the original touch event to the remote game.
 	if event is InputEventMouse and event.device == InputEvent.DEVICE_ID_EMULATION:
 		return
-	if not client.authenticated or not screen.texture:
+	if license_panel.visible or not client.authenticated or not screen.texture:
 		return
 	var rect := _image_rect()
 	var pointer := ""
@@ -165,21 +199,21 @@ func _input(event: InputEvent) -> void:
 	client.send_input(event, rect)
 	get_viewport().set_input_as_handled()
 
-func _top_inset() -> float:
-	if not OS.has_feature("mobile"):
-		return 0.0
-	return safe_area_insets(Rect2(DisplayServer.get_display_safe_area()), Vector2(DisplayServer.window_get_size()), size).y
-
 func _update_safe_area() -> void:
 	var insets := Vector4.ZERO
 	if OS.has_feature("mobile"):
 		var safe := Rect2(DisplayServer.get_display_safe_area())
 		var window_size := Vector2(DisplayServer.window_get_size())
 		insets = safe_area_insets(safe, window_size, size)
-	_safe_margin.add_theme_constant_override("margin_left", int(insets.x) + 8)
-	_safe_margin.add_theme_constant_override("margin_top", int(insets.y) + (60 if server_picker.visible and client.authenticated else 8))
-	_safe_margin.add_theme_constant_override("margin_right", int(insets.z) + 8)
-	_safe_margin.add_theme_constant_override("margin_bottom", int(insets.w) + 8)
+	license_panel.offset_left = insets.x
+	license_panel.offset_top = insets.y
+	license_panel.offset_right = -insets.z
+	license_panel.offset_bottom = -insets.w
+	var padding := 8 if server_picker.visible else 0
+	_safe_margin.add_theme_constant_override("margin_left", int(insets.x) + padding)
+	_safe_margin.add_theme_constant_override("margin_top", int(insets.y) + (60 if server_picker.visible and client.authenticated else padding))
+	_safe_margin.add_theme_constant_override("margin_right", int(insets.z) + padding)
+	_safe_margin.add_theme_constant_override("margin_bottom", int(insets.w) + padding)
 
 	settings_button.position = Vector2(size.x - insets.z - 104, insets.y + 8)
 

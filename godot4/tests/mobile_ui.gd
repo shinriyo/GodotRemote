@@ -51,7 +51,7 @@ func _run() -> void:
 	for _frame in range(3):
 		await process_frame
 	check(not ui.server_picker.visible and ui.settings_button.visible, "connection hides settings and keeps a settings button")
-	check(ui.screen.size.y >= ui.size.y - 16, "connected stream uses full available height")
+	check(ui.screen.get_global_rect().is_equal_approx(Rect2(Vector2.ZERO, ui.size)), "connected stream has no added margins")
 	ui.settings_button.pressed.emit()
 	await process_frame
 	check(ui.server_picker.visible, "settings can be reopened while connected")
@@ -65,6 +65,13 @@ func _run() -> void:
 	settings_touch.position = ui.settings_button.get_global_rect().get_center()
 	ui._input(settings_touch)
 	check(fake.messages.is_empty(), "settings button touch is not sent to game")
+	ui.license_panel.show()
+	settings_touch.position = ui._image_rect().get_center()
+	ui._input(settings_touch)
+	check(fake.messages.is_empty(), "license screen does not forward touches")
+	ui.license_panel.hide()
+	var notices := preload("res://license_notices.gd").full_text()
+	check(notices.contains("2020-2022 DmitriySalnikov") and notices.contains(Engine.get_license_text()) and notices.contains("Third-party component notices"), "offline notices include original MIT and engine licenses")
 	var touch := InputEventScreenTouch.new()
 	touch.index = 0
 	touch.pressed = true

@@ -7,7 +7,7 @@ func _initialize() -> void:
 		if script == null or not script.can_instantiate():
 			quit(1)
 			return
-	for path in ["res://client_ui.gd", "res://demo_server.gd"]:
+	for path in ["res://license_notices.gd", "res://client_ui.gd", "res://demo_server.gd"]:
 		var script = load(path)
 		if script == null or not script.can_instantiate():
 			quit(1)

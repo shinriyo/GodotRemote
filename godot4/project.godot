@@ -1,8 +1,8 @@
 config_version=5
 
 [application]
-config/name="Godot Remote 4"
-config/icon="res://icon.png"
+config/name="SHINRIYO Remote for Godot 4"
+config/icon="res://remote_icon.svg"
 run/main_scene="res://client.tscn"
 
 [display]
