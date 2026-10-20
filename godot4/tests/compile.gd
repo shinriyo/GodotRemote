@@ -1,7 +1,7 @@
 extends SceneTree
 
 func _initialize() -> void:
-	var scripts := ["link", "input_codec", "server", "client", "autoload", "plugin"]
+	var scripts := ["discovery", "link", "input_codec", "server", "client", "autoload", "plugin"]
 	for name in scripts:
 		var script = load("res://addons/godot_remote/%s.gd" % name)
 		if script == null or not script.can_instantiate():

@@ -2,7 +2,7 @@
 
 ## Godot 4.7.2 port
 
-A new Godot 4 implementation is available in [`godot4/`](godot4/README.md), including a server add-on and iPhone/Android/desktop client. It supports JPEG streaming, touch/mouse/keyboard input, mobile sensors and custom messages. See the compatibility table there for features still requiring migration. The original Godot 3 sources below remain available; the two clients use different protocols.
+A new Godot 4 implementation is available in [`godot4/`](godot4/README.md), including a server add-on and iPhone/Android/desktop client. It supports JPEG streaming, touch/mouse/keyboard input, mobile sensors, custom messages, and Bonjour discovery from the iPhone client to a Mac server. See the compatibility table there for features still requiring migration. The original Godot 3 sources below remain available; the two clients use different protocols.
 
 This is cross platform native module for [Godot Engine](https://github.com/godotengine/godot) v3 for control apps and games over WiFi or ADB.
 

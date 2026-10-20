@@ -21,15 +21,26 @@ var _last_received := 0
 var _frame_pending := false
 var _capturing := false
 var _held := {}
+var _bonjour_pid := -1
+var discovery_enabled := true
 
 func _init() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 func start(port: int = 22766, bind_address: String = "*") -> Error:
 	stop()
-	return listener.listen(port, bind_address)
+	var error := listener.listen(port, bind_address)
+	if error == OK and discovery_enabled and OS.has_feature("macos") and bind_address != "127.0.0.1" and bind_address != "::1":
+		var service_name := "%s (%s)" % [ProjectSettings.get_setting("application/config/name", "Godot game"), port]
+		while service_name.to_utf8_buffer().size() > 63:
+			service_name = service_name.left(service_name.length() - 1)
+		_bonjour_pid = OS.create_process("/usr/bin/dns-sd", ["-R", service_name, "_godotremote._tcp", "local.", str(port), "v=1"])
+	return error
 
 func stop() -> void:
+	if _bonjour_pid > 0 and OS.is_process_running(_bonjour_pid):
+		OS.kill(_bonjour_pid)
+	_bonjour_pid = -1
 	_drop()
 	listener.stop()
 

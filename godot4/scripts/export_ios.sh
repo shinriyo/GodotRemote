@@ -6,6 +6,7 @@ godot_bin=${GODOT_BIN:-/Applications/Godot.app/Contents/MacOS/Godot}
 mkdir -p "$project_dir/build/ios"
 "$godot_bin" --headless --audio-driver Dummy --path "$project_dir" \
   --export-debug iOS "$project_dir/build/ios/GodotRemote4.zip"
+python3 "$project_dir/scripts/inject_ios_discovery.py" "$project_dir/build/ios/GodotRemote4"
 xcrun xcodebuild -project "$project_dir/build/ios/GodotRemote4.xcodeproj" \
   -scheme GodotRemote4 -configuration Debug -sdk iphoneos \
   -destination 'generic/platform=iOS' \
