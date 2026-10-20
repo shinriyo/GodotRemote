@@ -18,6 +18,7 @@ var _safe_margin := MarginContainer.new()
 var settings_button := Button.new()
 var _settings_controls: Array[Control] = []
 var license_panel := PanelContainer.new()
+var _license_margin := MarginContainer.new()
 
 func _ready() -> void:
 	add_child(client)
@@ -101,12 +102,14 @@ func _ready() -> void:
 func _build_license_panel() -> void:
 	add_child(license_panel)
 	license_panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	var margin := MarginContainer.new()
-	license_panel.add_child(margin)
+	var background := StyleBoxFlat.new()
+	background.bg_color = Color("101d32")
+	license_panel.add_theme_stylebox_override("panel", background)
+	license_panel.add_child(_license_margin)
 	for edge in ["left", "right", "top", "bottom"]:
-		margin.add_theme_constant_override("margin_" + edge, 24)
+		_license_margin.add_theme_constant_override("margin_" + edge, 24)
 	var column := VBoxContainer.new()
-	margin.add_child(column)
+	_license_margin.add_child(column)
 	var heading := Label.new()
 	heading.text = ProjectSettings.get_setting("application/config/name")
 	heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -117,6 +120,11 @@ func _build_license_panel() -> void:
 	notices.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	notices.text = preload("res://license_notices.gd").full_text()
 	column.add_child(notices)
+	var privacy := Button.new()
+	privacy.text = "Privacy Policy"
+	privacy.custom_minimum_size.y = 48
+	privacy.pressed.connect(func(): OS.shell_open("https://shinriyo-remote.netlify.app/privacy-en.html"))
+	column.add_child(privacy)
 	var close := Button.new()
 	close.text = "Close"
 	close.custom_minimum_size.y = 48
@@ -205,10 +213,10 @@ func _update_safe_area() -> void:
 		var safe := Rect2(DisplayServer.get_display_safe_area())
 		var window_size := Vector2(DisplayServer.window_get_size())
 		insets = safe_area_insets(safe, window_size, size)
-	license_panel.offset_left = insets.x
-	license_panel.offset_top = insets.y
-	license_panel.offset_right = -insets.z
-	license_panel.offset_bottom = -insets.w
+	_license_margin.add_theme_constant_override("margin_left", int(insets.x) + 24)
+	_license_margin.add_theme_constant_override("margin_top", int(insets.y) + 24)
+	_license_margin.add_theme_constant_override("margin_right", int(insets.z) + 24)
+	_license_margin.add_theme_constant_override("margin_bottom", int(insets.w) + 24)
 	var padding := 8 if server_picker.visible else 0
 	_safe_margin.add_theme_constant_override("margin_left", int(insets.x) + padding)
 	_safe_margin.add_theme_constant_override("margin_top", int(insets.y) + (60 if server_picker.visible and client.authenticated else padding))
