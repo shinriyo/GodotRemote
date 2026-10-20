@@ -6,8 +6,10 @@ Godot 4向けのサーバーアドオンと、新しいiPhone／Android／デス
 
 ## PC側のゲームに組み込む
 
+サーバープラグインの正式名称は **SHINRIYO Remote Server for Godot 4** です。
+
 1. このディレクトリの `addons/godot_remote` を、対象Godot 4プロジェクトの `addons/` にコピーします。
-2. 「プロジェクト設定 → プラグイン」で **Godot Remote 4** を有効にします。
+2. 「プロジェクト設定 → プラグイン」で **SHINRIYO Remote Server for Godot 4** を有効にします。
 3. 必要に応じて「プロジェクト設定」の `godot_remote/server` を設定します。
 4. ゲームを実行します。実行中のルートViewportを転送します。
 
