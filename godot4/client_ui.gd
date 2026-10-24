@@ -12,6 +12,7 @@ var status := Label.new()
 var host := LineEdit.new()
 var port := SpinBox.new()
 var password := LineEdit.new()
+var _paste_target: LineEdit
 var connect_button := Button.new()
 var _active_pointers := {}
 var _safe_margin := MarginContainer.new()
@@ -46,33 +47,61 @@ func _ready() -> void:
 	discovery.servers_changed.connect(_servers_changed)
 	discovery.status_changed.connect(func(message): discovery_status.text = message)
 	add_child(discovery)
-	var toolbar := HFlowContainer.new()
+	var toolbar := VBoxContainer.new()
 	layout.add_child(toolbar)
-	host.placeholder_text = "PC IP address"
+	var host_row := HBoxContainer.new()
+	toolbar.add_child(host_row)
+	host.placeholder_text = "PC IP or hostname"
+	host.clear_button_enabled = true
 	host.text = "" if OS.has_feature("mobile") else "127.0.0.1"
-	host.custom_minimum_size.x = 200
-	toolbar.add_child(host)
+	host.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	host.focus_entered.connect(func(): _paste_target = host)
+	host_row.add_child(host)
+	var host_paste_button := Button.new()
+	host_paste_button.text = "Paste Host"
+	host_paste_button.pressed.connect(func(): _paste_into_field(host))
+	host_row.add_child(host_paste_button)
+	var connection_row := HBoxContainer.new()
+	toolbar.add_child(connection_row)
 	port.min_value = 1024
 	port.max_value = 65535
 	port.value = 22766
-	toolbar.add_child(port)
+	port.custom_minimum_size.x = 110
+	connection_row.add_child(port)
 	password.placeholder_text = "Password"
+	password.clear_button_enabled = true
 	password.secret = true
-	password.custom_minimum_size.x = 140
-	toolbar.add_child(password)
+	password.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	password.focus_entered.connect(func(): _paste_target = password)
+	connection_row.add_child(password)
+	var password_visibility_button := Button.new()
+	password_visibility_button.text = "Show"
+	password_visibility_button.tooltip_text = "Show or hide password"
+	password_visibility_button.pressed.connect(func():
+		password.secret = not password.secret
+		password_visibility_button.text = "Show" if password.secret else "Hide"
+	)
+	connection_row.add_child(password_visibility_button)
+	var action_row := HBoxContainer.new()
+	toolbar.add_child(action_row)
+	var password_paste_button := Button.new()
+	password_paste_button.text = "Paste Password"
+	password_paste_button.pressed.connect(func(): _paste_into_field(password))
+	action_row.add_child(password_paste_button)
 	connect_button.text = "Connect"
 	connect_button.pressed.connect(_connect_pressed)
-	toolbar.add_child(connect_button)
+	action_row.add_child(connect_button)
 	var disconnect_button := Button.new()
 	disconnect_button.text = "Disconnect"
+	disconnect_button.hide()
 	disconnect_button.pressed.connect(func(): client.disconnect_from_host())
-	toolbar.add_child(disconnect_button)
+	action_row.add_child(disconnect_button)
 	var licenses_button := Button.new()
 	licenses_button.text = "About / Licenses"
 	licenses_button.custom_minimum_size.y = 48
 	licenses_button.pressed.connect(func(): license_panel.show(); get_viewport().gui_release_focus())
-	toolbar.add_child(licenses_button)
-	status.text = "Enter the Mac/PC IP address on the same Wi-Fi."
+	action_row.add_child(licenses_button)
+	status.text = "Enter the Mac/PC IP address or a public hostname."
 	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	layout.add_child(status)
 	screen.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -88,14 +117,27 @@ func _ready() -> void:
 	settings_button.hide()
 	settings_button.pressed.connect(func(): _show_settings(not server_picker.visible))
 	add_child(settings_button)
-	for control in [host, port, password, connect_button, disconnect_button]:
+	for control in [host, host_paste_button, port, password, password_visibility_button, password_paste_button, connect_button, disconnect_button]:
 		control.custom_minimum_size.y = 48
 	var saved := ConfigFile.new()
 	if saved.load("user://connection.cfg") == OK:
 		host.text = saved.get_value("connection", "host", host.text)
 		port.value = saved.get_value("connection", "port", port.value)
-	client.connected.connect(func(): status.text = "Connected — waiting for video"; connect_button.disabled = false; _show_settings(false))
-	client.disconnected.connect(func(reason): status.text = reason; screen.texture = null; _active_pointers.clear(); connect_button.disabled = false; _show_settings(true))
+	client.connected.connect(func():
+		status.text = "Connected — waiting for video"
+		connect_button.hide()
+		disconnect_button.show()
+		_show_settings(false)
+	)
+	client.disconnected.connect(func(reason):
+		status.text = reason
+		screen.texture = null
+		_active_pointers.clear()
+		disconnect_button.hide()
+		connect_button.show()
+		connect_button.disabled = false
+		_show_settings(true)
+	)
 	client.frame_received.connect(_frame_received)
 	_build_license_panel()
 
@@ -144,7 +186,7 @@ func _show_settings(show_panel: bool) -> void:
 
 func _connect_pressed() -> void:
 	if host.text.strip_edges().is_empty():
-		status.text = "Enter the Mac/PC IP address first."
+		status.text = "Enter the Mac/PC IP address or hostname first."
 		return
 	var saved := ConfigFile.new()
 	saved.set_value("connection", "host", host.text.strip_edges())
@@ -155,6 +197,16 @@ func _connect_pressed() -> void:
 	connect_button.disabled = error == OK
 	get_viewport().gui_release_focus()
 	DisplayServer.virtual_keyboard_hide()
+
+func _paste_into_field(field: LineEdit) -> void:
+	var clipboard := DisplayServer.clipboard_get()
+	if clipboard.is_empty():
+		status.text = "Clipboard is empty."
+		return
+	field.text = clipboard
+	field.caret_column = field.text.length()
+	_paste_target = field
+	status.text = "Pasted into %s." % ("Host" if field == host else "Password")
 
 func _frame_received(image: Image) -> void:
 	if screen.texture is ImageTexture and screen.texture.get_size() == Vector2(image.get_size()):

@@ -1,5 +1,11 @@
 # Godot Remote
 
+## Godot 4版を使う方へ
+
+**iPhoneアプリだけでは接続できません。操作したいゲームへ `godot4/addons/godot_remote` をコピーし、プラグインを有効にしてゲームを実行してください。** リポジトリ直下の `addons/` は旧Godot 3版です。
+
+[Macへの導入 → iPhoneで接続 → つながらないときの確認](godot4/README.md#はじめて使うmacのゲームをiphoneで操作する)
+
 ## Godot 4.7.2 port
 
 A new Godot 4 implementation is available in [`godot4/`](godot4/README.md), including a server add-on and iPhone/Android/desktop client. It supports JPEG streaming, touch/mouse/keyboard input, mobile sensors, custom messages, and Bonjour discovery from the iPhone client to a Mac server. See the compatibility table there for features still requiring migration. The original Godot 3 sources below remain available; the two clients use different protocols.

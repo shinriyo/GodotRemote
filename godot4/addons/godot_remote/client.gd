@@ -18,11 +18,21 @@ var _last_received := 0
 
 func connect_to_host(host: String, port: int = 22766, password: String = "") -> Error:
 	disconnect_from_host()
-	var tcp := StreamPeerTCP.new()
-	var error := tcp.connect_to_host(host, port)
+	var ws := WebSocketPeer.new()
+	var endpoint := host.strip_edges()
+	var endpoint_port := port
+	if endpoint.begins_with("https://"):
+		endpoint = "wss://" + endpoint.trim_prefix("https://")
+		endpoint_port = 443
+	elif endpoint.begins_with("http://"):
+		endpoint = "ws://" + endpoint.trim_prefix("http://")
+		endpoint_port = 80
+	elif not endpoint.begins_with("ws://") and not endpoint.begins_with("wss://"):
+		endpoint = "ws://%s:%d" % [endpoint, endpoint_port]
+	var error := ws.connect_to_url(endpoint if endpoint.begins_with("ws") else "%s:%d" % [endpoint, endpoint_port])
 	if error != OK:
 		return error
-	link = Link.new(tcp)
+	link = Link.new(ws, true)
 	_password = password
 	_last_received = Time.get_ticks_msec()
 	return OK
@@ -44,11 +54,12 @@ func _exit_tree() -> void:
 func _process(delta: float) -> void:
 	if not link:
 		return
-	var status: int = link.poll()
-	if status in [StreamPeerTCP.STATUS_NONE, StreamPeerTCP.STATUS_ERROR] or Time.get_ticks_msec() - _last_received > 10000:
+	link.poll()
+	var status: int = link.websocket.get_ready_state()
+	if status == WebSocketPeer.STATE_CLOSED or Time.get_ticks_msec() - _last_received > 10000:
 		disconnect_from_host("Connection closed or timed out; check address, port and password")
 		return
-	if status != StreamPeerTCP.STATUS_CONNECTED:
+	if status != WebSocketPeer.STATE_OPEN:
 		return
 	if not _hello_sent:
 		link.send({"type": "hello", "version": Link.VERSION, "password": _password})

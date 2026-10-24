@@ -15,6 +15,7 @@ var image_scale := 0.5
 var capture_enabled := true
 var authenticated := false
 var listener := TCPServer.new()
+var websocket_listener := true
 var link: RefCounted
 var _elapsed := 0.0
 var _last_received := 0
@@ -72,11 +73,13 @@ func _process(delta: float) -> void:
 		if link:
 			stream.disconnect_from_host()
 		else:
-			link = Link.new(stream)
+			link = Link.new(stream, websocket_listener)
 			_last_received = Time.get_ticks_msec()
 	if not link:
 		return
-	if link.poll() != StreamPeerTCP.STATUS_CONNECTED or Time.get_ticks_msec() - _last_received > (10000 if authenticated else 3000):
+	var link_status: int = link.poll()
+	var connected: bool = (link_status == WebSocketPeer.STATE_OPEN) if websocket_listener else (link_status == StreamPeerTCP.STATUS_CONNECTED)
+	if not connected or Time.get_ticks_msec() - _last_received > (10000 if authenticated else 3000):
 		_drop()
 		return
 	for message in link.receive():

@@ -1,0 +1,67 @@
+[
+  {
+    "file": "apple-ja.svg",
+    "source": "https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/ja-jp",
+    "dimensions": "0 0 108.85157 40"
+  },
+  {
+    "file": "google-ja.png",
+    "source": "https://play.google.com/intl/en_us/badges/static/images/badges/ja_badge_web_generic.png",
+    "dimensions": [
+      646,
+      250
+    ]
+  },
+  {
+    "file": "apple-en.svg",
+    "source": "https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us",
+    "dimensions": "0 0 119.66407 40"
+  },
+  {
+    "file": "google-en.png",
+    "source": "https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png",
+    "dimensions": [
+      646,
+      250
+    ]
+  },
+  {
+    "file": "apple-zh-Hans.svg",
+    "source": "https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/zh-cn",
+    "dimensions": "0 0 108.85157 40"
+  },
+  {
+    "file": "google-zh-Hans.png",
+    "source": "https://play.google.com/intl/en_us/badges/static/images/badges/zh-cn_badge_web_generic.png",
+    "dimensions": [
+      646,
+      250
+    ]
+  },
+  {
+    "file": "apple-ko.svg",
+    "source": "https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/ko-kr",
+    "dimensions": "0 0 129.70071 40"
+  },
+  {
+    "file": "google-ko.png",
+    "source": "https://play.google.com/intl/en_us/badges/static/images/badges/ko_badge_web_generic.png",
+    "dimensions": [
+      646,
+      250
+    ]
+  },
+  {
+    "file": "apple-vi.svg",
+    "source": "https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/vi-vn",
+    "dimensions": "0 0 119.66407 40"
+  },
+  {
+    "file": "google-vi.png",
+    "source": "https://play.google.com/intl/en_us/badges/static/images/badges/vi_badge_web_generic.png",
+    "dimensions": [
+      646,
+      250
+    ]
+  }
+]
