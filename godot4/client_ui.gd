@@ -51,6 +51,10 @@ func _ready() -> void:
 	layout.add_child(toolbar)
 	var host_row := HBoxContainer.new()
 	toolbar.add_child(host_row)
+	var host_label := Label.new()
+	host_label.text = "Host"
+	host_label.custom_minimum_size.x = 92
+	host_row.add_child(host_label)
 	host.placeholder_text = "PC IP or hostname"
 	host.clear_button_enabled = true
 	host.text = "" if OS.has_feature("mobile") else "127.0.0.1"
@@ -58,49 +62,72 @@ func _ready() -> void:
 	host.focus_entered.connect(func(): _paste_target = host)
 	host_row.add_child(host)
 	var host_paste_button := Button.new()
-	host_paste_button.text = "Paste Host"
+	host_paste_button.text = "Paste"
 	host_paste_button.pressed.connect(func(): _paste_into_field(host))
 	host_row.add_child(host_paste_button)
-	var connection_row := HBoxContainer.new()
-	toolbar.add_child(connection_row)
-	port.min_value = 1024
+	var port_row := HBoxContainer.new()
+	toolbar.add_child(port_row)
+	var port_label := Label.new()
+	port_label.text = "Port"
+	port_label.custom_minimum_size.x = 92
+	port_row.add_child(port_label)
+	port.min_value = 1
 	port.max_value = 65535
 	port.value = 22766
 	port.custom_minimum_size.x = 110
-	connection_row.add_child(port)
+	port.get_line_edit().virtual_keyboard_type = LineEdit.KEYBOARD_TYPE_NUMBER
+	port_row.add_child(port)
+	var password_row := HBoxContainer.new()
+	toolbar.add_child(password_row)
+	var password_label := Label.new()
+	password_label.text = "Password"
+	password_label.custom_minimum_size.x = 92
+	password_row.add_child(password_label)
 	password.placeholder_text = "Password"
 	password.clear_button_enabled = true
 	password.secret = true
 	password.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	password.focus_entered.connect(func(): _paste_target = password)
-	connection_row.add_child(password)
+	password_row.add_child(password)
 	var password_visibility_button := Button.new()
-	password_visibility_button.text = "Show"
+	var eye_icon: Texture2D = load("res://eye.svg")
+	var eye_off_icon: Texture2D = load("res://eye_off.svg")
+	password_visibility_button.icon = eye_icon
+	password_visibility_button.custom_minimum_size.x = 52
 	password_visibility_button.tooltip_text = "Show or hide password"
 	password_visibility_button.pressed.connect(func():
 		password.secret = not password.secret
-		password_visibility_button.text = "Show" if password.secret else "Hide"
+		password_visibility_button.icon = eye_icon if password.secret else eye_off_icon
 	)
-	connection_row.add_child(password_visibility_button)
+	password_row.add_child(password_visibility_button)
+	var password_paste_button := Button.new()
+	password_paste_button.text = "Paste"
+	password_paste_button.pressed.connect(func(): _paste_into_field(password))
+	password_row.add_child(password_paste_button)
 	var action_row := HBoxContainer.new()
 	toolbar.add_child(action_row)
-	var password_paste_button := Button.new()
-	password_paste_button.text = "Paste Password"
-	password_paste_button.pressed.connect(func(): _paste_into_field(password))
-	action_row.add_child(password_paste_button)
 	connect_button.text = "Connect"
+	connect_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	connect_button.icon = load("res://connect.svg")
+	connect_button.modulate = Color("#86e6ad")
 	connect_button.pressed.connect(_connect_pressed)
 	action_row.add_child(connect_button)
 	var disconnect_button := Button.new()
 	disconnect_button.text = "Disconnect"
+	disconnect_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	disconnect_button.icon = load("res://disconnect.svg")
+	disconnect_button.modulate = Color("#f28b8b")
 	disconnect_button.hide()
 	disconnect_button.pressed.connect(func(): client.disconnect_from_host())
 	action_row.add_child(disconnect_button)
 	var licenses_button := Button.new()
-	licenses_button.text = "About / Licenses"
-	licenses_button.custom_minimum_size.y = 48
+	licenses_button.text = "About"
+	licenses_button.tooltip_text = "App information and licenses"
+	licenses_button.flat = true
+	licenses_button.add_theme_font_size_override("font_size", 14)
+	licenses_button.custom_minimum_size = Vector2(64, 44)
+	licenses_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	licenses_button.pressed.connect(func(): license_panel.show(); get_viewport().gui_release_focus())
-	action_row.add_child(licenses_button)
 	status.text = "Enter the Mac/PC IP address or a public hostname."
 	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	layout.add_child(status)
@@ -109,7 +136,8 @@ func _ready() -> void:
 	screen.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	screen.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	layout.add_child(screen)
-	_settings_controls.assign([server_picker, discovery_status, toolbar, status])
+	layout.add_child(licenses_button)
+	_settings_controls.assign([server_picker, discovery_status, toolbar, status, licenses_button])
 	settings_button.text = "Settings"
 	settings_button.custom_minimum_size = Vector2(96, 48)
 	settings_button.size = Vector2(96, 48)
@@ -206,7 +234,7 @@ func _paste_into_field(field: LineEdit) -> void:
 	field.text = clipboard
 	field.caret_column = field.text.length()
 	_paste_target = field
-	status.text = "Pasted into %s." % ("Host" if field == host else "Password")
+	status.text = "Pasted."
 
 func _frame_received(image: Image) -> void:
 	if screen.texture is ImageTexture and screen.texture.get_size() == Vector2(image.get_size()):
