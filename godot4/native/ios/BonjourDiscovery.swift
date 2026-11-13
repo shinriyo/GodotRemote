@@ -31,6 +31,7 @@ final class RemoteBonjour: NSObject, NetServiceBrowserDelegate, NetServiceDelega
     }
 
     @objc private func resume() {
+        guard timer != nil else { return }
         browser.stop()
         for service in services.values { service.stop() }
         services.removeAll()
@@ -51,24 +52,29 @@ final class RemoteBonjour: NSObject, NetServiceBrowserDelegate, NetServiceDelega
     }
 
     func netServiceBrowser(_ browser: NetServiceBrowser, didFind service: NetService, moreComing: Bool) {
-        guard services.count < 32 else { return }
+        guard timer != nil, browser === self.browser, services.count < 32 else { return }
         services[key(service)] = service
         service.delegate = self
         service.resolve(withTimeout: 5)
     }
 
     func netServiceBrowser(_ browser: NetServiceBrowser, didRemove service: NetService, moreComing: Bool) {
+        guard timer != nil, browser === self.browser else { return }
         services.removeValue(forKey: key(service))?.stop()
         endpoints.removeValue(forKey: key(service))
         sendSnapshot()
     }
 
     func netServiceBrowser(_ browser: NetServiceBrowser, didNotSearch errorDict: [String: NSNumber]) {
+        guard timer != nil, browser === self.browser else { return }
         state = "unavailable"
         sendSnapshot()
     }
 
     func netServiceDidResolveAddress(_ sender: NetService) {
+        // Resolution can complete after stop(), resume(), or service removal.
+        // Do not let an obsolete callback restore stale endpoints.
+        guard timer != nil, services[key(sender)] === sender else { return }
         guard let txt = sender.txtRecordData(),
               let version = NetService.dictionary(fromTXTRecord: txt)["v"],
               String(data: version, encoding: .utf8) == "1",

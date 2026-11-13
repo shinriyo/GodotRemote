@@ -134,7 +134,7 @@ GodotRemote.send_user_data("score", 100)
 | カスタム入力シーン転送、旧通知／統計UI、旧API互換 | 未移植 |
 | iPhone用アプリ | ARM64ビルド・開発用署名・iPhone 15 Pro Maxへのインストールとデモの実操作を確認 |
 | iPhone向けUI | 最大表示・設定切替・入力分離を含む24項目をヘッドレス検証。実機縦画面で長いゲーム名の表示・選択・接続を確認 |
-| App Store／TestFlight公開 | 未設定 |
+| App Store公開 | iOS 4.0.0を2026-11-13に日本ストアで確認。[公開情報とソース版の注意点](releases/2026-11-13.md) |
 
 ## ヘッドレス検証
 
@@ -172,4 +172,4 @@ iPhone 15 Pro MaxとMac上のGodot 4.7.2デモで、Bonjour一覧からの選択
 
 有料版はアプリの購入であり、寄付を募る仕組みではありません。無料のソース配布にも元作者の著作権表記とライセンスを保持します。
 
-現在は販売準備中です。App Store版は未公開です。販売前に、配布する版に対応したソースとアドオンを取得できることを確認します。公開後に使用する紹介文は [STORE_DESCRIPTION.md](STORE_DESCRIPTION.md) に用意しています。
+iOS 4.0.0は[App Store](https://apps.apple.com/jp/app/shinriyo-remote-for-godot-4/id6824852108)で公開されています。日本価格は買い切り500円です。このリポジトリのソースタグは配布IPAと同一ソースであることを保証するものではありません。[リリースノート](releases/2026-11-13.md)を参照してください。
