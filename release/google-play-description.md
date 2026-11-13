@@ -1,5 +1,7 @@
 # Google Play listing draft
 
+Next Android release draft only — not submitted to Play Console (2026-10-28).
+
 Name: SHINRIYO Remote for Godot 4
 
 Short description:
@@ -13,10 +15,11 @@ View a game running on your development computer and send touch input back to it
 
 REQUIRED SETUP
 
-You need a computer running Godot, the free Godot Remote 4 server addon installed in each game project, and a local network that allows the computer and Android device to communicate. Tested server version: Godot 4.7.2. Other Godot versions have not been verified.
+You need a computer running Godot, the free SHINRIYO Remote Server for Godot 4 server addon installed in each game project, and a local network that allows the computer and Android device to communicate. Tested server version: Godot 4.7.2. Other Godot versions have not been verified.
 
-1. Download the source and copy godot4/addons/godot_remote into your game's addons folder.
-2. Enable Godot Remote 4 under Project > Project Settings > Plugins.
+1. Download the free addon ZIP: https://store.godotengine.org/asset/shinriyo/shinriyo-remote-server/
+   Extract addons/godot_remote into your game project. The current addon is 4.0.0-dev (Unstable), supporting Godot 4.7.2–4.7.2.
+2. Enable SHINRIYO Remote Server for Godot 4 under Project > Project Settings > Plugins.
 3. Run or restart your game on the computer.
 4. Open this Android app, enter the computer's LAN IP address and port (default: 22766), and press Connect.
 

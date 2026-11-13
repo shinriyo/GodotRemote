@@ -1,5 +1,7 @@
 # SHINRIYO Remote for Godot 4 — Godot 4.7.2向け
 
+[今後の開発予定：次回はUI改善、その次は音声転送](ROADMAP.md)
+
 Godot 4向けのサーバーアドオンと、新しいiPhone／Android／デスクトップクライアントです。標準GodotのGDScript APIで実装しているため、エンジン本体やC++ライブラリのビルドは不要です。Godot 4.7.2で動作確認済みです。他のGodot 4.xは未検証で、対応する最低バージョンは未確定です。
 
 旧Godot 3版のネイティブモジュールを全機能移植したものではありません。基本的な遠隔操作を新しい通信方式で実装した開発版です。旧クライアント・旧APIとは互換性がありません。
@@ -20,9 +22,11 @@ Godot 4向けのサーバーアドオンと、新しいiPhone／Android／デス
 
 ### 2. ゲームにアドオンを入れる（初回だけ）
 
-1. このGodot 4版を含むリポジトリをダウンロードします。現在の開発版は [developブランチ](https://github.com/shinriyo/GodotRemote/tree/develop) にあります。
-2. ダウンロードした中の **`godot4/addons/godot_remote` フォルダ全体**をコピーします。
-3. 操作したいゲームの `project.godot` と同じ階層に `addons` フォルダを作り、その中に貼り付けます。既存の `addons` がある場合は、その中へ追加します。
+1. [Godot Asset Storeの配布ページ](https://store.godotengine.org/asset/shinriyo/shinriyo-remote-server/)から無料のサーバーアドオンZIPをダウンロードします。公開版は **4.0.0-dev（Unstable）**、ストアの最小・最大対応版は **Godot 4.7.2** です。
+2. ZIP内の **`addons/godot_remote` フォルダ全体**を、操作したいゲームの `project.godot` と同じ階層の `addons` 内へ展開します。既存ファイルがある場合は内容を確認してください。
+3. 「プロジェクト → プロジェクト設定 → プラグイン」で **SHINRIYO Remote Server for Godot 4** を有効にして、ゲームを再実行します。
+
+GitHubから手動導入する場合は、[developブランチ](https://github.com/shinriyo/GodotRemote/tree/develop)の `godot4/addons/godot_remote` フォルダ全体を同じ場所へコピーします。
 
 ```text
 あなたのゲーム/
@@ -39,7 +43,7 @@ Godot 4向けのサーバーアドオンと、新しいiPhone／Android／デス
 
 **リポジトリ直下の `addons/godot_remote` は旧Godot 3版です。コピー元を間違えないでください。ゲームの `project.godot` をこのリポジトリのものに置き換える必要はありません。**
 
-4. Godotで「あなたのゲーム」を開き、「プロジェクト → プロジェクト設定 → プラグイン」で **Godot Remote 4** を有効にします。この名前はプラグイン一覧の表示名です。
+4. Godotで「あなたのゲーム」を開き、「プロジェクト → プロジェクト設定 → プラグイン」で **SHINRIYO Remote Server for Godot 4** を有効にします。この名前はプラグイン一覧の表示名です。
 5. ゲームを実行します（通常はF6で現在のシーン、F5でプロジェクト）。すでに実行中なら、一度停止して再実行してください。
 
 スクリプトの編集やノードの追加は不要です。有効化時に `GodotRemote` の自動読み込みが登録され、ゲーム実行時に接続を待ち受けます。
@@ -120,7 +124,7 @@ Password: サーバー側と同じ値
 
 ### 接続パスワードを設定する
 
-1. Mac側の**操作したいゲームプロジェクト**で、「プロジェクト → プロジェクト設定 → プラグイン」の **Godot Remote 4** を有効にします。
+1. Mac側の**操作したいゲームプロジェクト**で、「プロジェクト → プロジェクト設定 → プラグイン」の **SHINRIYO Remote Server for Godot 4** を有効にします。
 2. 「一般」タブに戻り、「詳細設定」をオンにして、`godot_remote/server` を検索します。
 3. **Password**（`godot_remote/server/password`）に任意のパスワードを入力します。
 4. 実行中のゲームを停止して再実行します。サーバーは起動時にこの設定を読み込みます。
@@ -130,7 +134,7 @@ Password: サーバー側と同じ値
 
 ### Godot公式ストアへの配布について
 
-サーバーアドオンは [Godot Asset Store](https://store.godotengine.org/) への配布申請対象にできます。Asset Storeは従来のAsset Libraryの後継です。この説明は申請方法の案内であり、本アドオンの掲載・審査承認を示すものではありません。現在の入手方法は上記のGitHubからのコピーです。
+2026年10月28日、[Godot Asset Store](https://store.godotengine.org/asset/shinriyo/shinriyo-remote-server/)で **4.0.0-dev（Unstable）** の一般公開を確認しました。READMEとプラグインの表示名を **SHINRIYO Remote Server for Godot 4** に統一したZIPです。対応範囲はGodot 4.7.2–4.7.2です。以下は今後の更新申請に向けた準備情報です。
 
 申請時には次を準備します。
 
