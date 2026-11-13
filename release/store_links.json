@@ -1,4 +1,12 @@
 {
-  "apple": {"badge_asset_status": "verified_official_localized", "store_url_status": "not_available", "url": null},
-  "google": {"badge_asset_status": "verified_official_localized", "store_url_status": "not_available", "url": null}
+  "apple": {
+    "badge_asset_status": "verified_official_localized",
+    "store_url_status": "confirmed",
+    "url": "https://apps.apple.com/app/shinriyo-remote-for-godot-4/id6824852108"
+  },
+  "google": {
+    "badge_asset_status": "verified_official_localized",
+    "store_url_status": "not_available",
+    "url": null
+  }
 }

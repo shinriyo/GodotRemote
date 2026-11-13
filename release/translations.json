@@ -5,18 +5,18 @@
     "tagline": "An independent tool for Godot developers",
     "hero": "Playtest your Mac game on your iPhone.",
     "intro": "View a running Godot game on your iPhone and send taps and drags back to your Mac.",
-    "status": "Tested with Godot 4.7.2. Other 4.x versions are unverified. This is a development version; the App Store edition is not yet available.",
+    "status": "Tested with Godot 4.7.2. Other 4.x versions are unverified. iOS version 4.0.0 is available on the App Store.",
     "required_title": "You need both the iPhone client and the game-side addon",
     "required": "Installing the iPhone app alone is not enough. Add and enable the free server addon in each game project you want to control, then run the game. You need a Mac, Godot 4.7.2, a compatible iPhone client, and a LAN that allows the devices to communicate. The game runs on the Mac; this does not replace testing a native iOS build.",
     "setup": "First-time setup",
     "steps": [
       [
-        "Copy the free addon",
-        "<p>Get the <a href=\"https://github.com/shinriyo/GodotRemote/tree/develop/godot4\">development source</a>. Copy the entire <code>godot4/addons/godot_remote</code> folder into your game's <code>addons/</code> folder.</p><p>The repository's root-level <code>addons/</code> contains the old Godot 3 version. Do not copy that version.</p>"
+        "Download the free addon",
+        "<p>Download the free server addon ZIP from the <a href=\"https://store.godotengine.org/asset/shinriyo/shinriyo-remote-server/\">Godot Asset Store</a> and extract <code>addons/godot_remote</code> into your game project. Enable <strong>SHINRIYO Remote Server for Godot 4</strong> in Project Settings → Plugins, then restart the game.</p><p>Published on 28 October 2026: version <strong>4.0.0-dev</strong> is available as <strong>Unstable</strong>, with Godot <strong>4.7.2</strong> as its minimum and maximum supported version. The README and plugin display name have been unified. This is the game-side addon; the iPhone client has a separate release status.</p><details><summary>GitHub</summary><p>Get the <a href=\"https://github.com/shinriyo/GodotRemote/tree/develop/godot4\">development source</a>. Copy the entire <code>godot4/addons/godot_remote</code> folder into your game's <code>addons/</code> folder.</p><p>The repository's root-level <code>addons/</code> contains the old Godot 3 version. Do not copy that version.</p></details>"
       ],
       [
         "Enable the plugin in Godot",
-        "<p>Open your game project. In <strong>Project Settings → Plugins</strong>, enable <strong>Godot Remote 4</strong>. Run the game, or stop and restart it if it is already running.</p>"
+        "<p>Open your game project. In <strong>Project Settings → Plugins</strong>, enable <strong>SHINRIYO Remote Server for Godot 4</strong>. Run the game, or stop and restart it if it is already running.</p>"
       ],
       [
         "Open the iPhone client on the same LAN",
@@ -27,18 +27,18 @@
         "<p>Select the running game from the list, then press <strong>Connect</strong>. The address is filled in automatically. If you configured a server password, enter the same password.</p>"
       ]
     ],
-    "install_note": "Keep your game's existing <code>project.godot</code>. No extra nodes are needed. Install the addon separately in each project. The App Store client is not released yet; see the <a href=\"https://github.com/shinriyo/GodotRemote/blob/develop/godot4/README.md\">README</a> for instructions to build the iPhone client yourself.",
+    "install_note": "Keep your game's existing <code>project.godot</code>. No extra nodes are needed. Install the addon separately in each project. The client is available on the <a href=\"https://apps.apple.com/app/shinriyo-remote-for-godot-4/id6824852108\">App Store</a>; see the <a href=\"https://github.com/shinriyo/GodotRemote/blob/develop/godot4/README.md\">README</a> for instructions to build the iPhone client yourself.",
     "controls_title": "After connecting",
     "controls": "Tap or drag on the game image. Settings hide after connection: use <strong>Settings</strong> to open them, <strong>Hide</strong> to return, and <strong>Disconnect</strong> to end the session. Turn your iPhone sideways for a larger view of landscape games. <strong>About / Licenses</strong> shows copyright notices. Moving the app to the background disconnects it; reconnect when you return.",
     "faq_title": "Connection troubleshooting",
     "faq": [
       [
         "How do I set or remove a connection password?",
-        "Enable Godot Remote 4 in your Mac game project. Open <strong>Project → Project Settings → General</strong>, enable <strong>Advanced Settings</strong>, and search for <code>godot_remote/server</code>. Set <strong>Password</strong> (<code>godot_remote/server/password</code>), then stop and restart the game. Enter the same value in the iPhone client’s <strong>Password</strong> field before connecting. The default is empty and needs no password. To remove it, clear the server setting, restart the game, and clear the client field too. Re-enter the password after relaunching the app. Traffic and passwords are unencrypted; use a trusted LAN."
+        "Enable SHINRIYO Remote Server for Godot 4 in your Mac game project. Open <strong>Project → Project Settings → General</strong>, enable <strong>Advanced Settings</strong>, and search for <code>godot_remote/server</code>. Set <strong>Password</strong> (<code>godot_remote/server/password</code>), then stop and restart the game. Enter the same value in the iPhone client’s <strong>Password</strong> field before connecting. The default is empty and needs no password. To remove it, clear the server setting, restart the game, and clear the client field too. Re-enter the password after relaunching the app. Traffic and passwords are unencrypted; use a trusted LAN."
       ],
       [
         "Is the addon available in the Godot Asset Store?",
-        "Currently, copy the addon from the GitHub source linked above. The free game-side addon can be submitted to the <a href=\"https://store.godotengine.org/\">Godot Asset Store</a>; this guide does not indicate a published or approved listing. Submission preparation includes a Godot 4-only ZIP, README, LICENSE and copyright notices, an English description, supported versions, and client installation and connection instructions. See the <a href=\"https://docs.godotengine.org/en/stable/community/asset_store/submitting_to_asset_store.html\">official submission guide</a>. Godot’s addon store is separate from Apple’s App Store for the iPhone app."
+        "<a href=\"https://store.godotengine.org/asset/shinriyo/shinriyo-remote-server/\">Godot Asset Store — SHINRIYO Remote Server for Godot 4</a>. Published on 28 October 2026: version <strong>4.0.0-dev</strong> is available as <strong>Unstable</strong>, with Godot <strong>4.7.2</strong> as its minimum and maximum supported version. The README and plugin display name have been unified. This is the game-side addon; the iPhone client has a separate release status."
       ],
       [
         "The plugin is missing from Godot",
@@ -66,7 +66,7 @@
       ]
     ],
     "funding_title": "Free source, with a paid edition to support development",
-    "funding": "Source code and the Mac addon are available free under MIT. We are preparing a one-time-purchase App Store edition that needs no manual build or signing. Revenue will support this app's development and maintenance, not donations to Godot Engine or the original author.",
+    "funding": "Source code and the Mac addon are available free under MIT. We offer a one-time-purchase App Store edition that needs no manual build or signing. Revenue will support this app's development and maintenance, not donations to Godot Engine or the original author.",
     "contact_title": "Questions & bug reports",
     "contact_button": "Contact us on GitHub Issues",
     "contact": "A GitHub account is required. Include your Godot version, iPhone model and iOS version, app version, steps to reproduce, and error messages.",
@@ -107,18 +107,18 @@
     "tagline": "面向 Godot 开发者的非官方工具",
     "hero": "在 iPhone 上操作并测试 Mac 上的游戏。",
     "intro": "在 iPhone 上查看正在运行的 Godot 游戏，并将点击和拖动操作发送回 Mac。",
-    "status": "已在 Godot 4.7.2 上验证。其他 4.x 版本尚未验证。目前为开发版，App Store 版本尚未上架。",
+    "status": "已在 Godot 4.7.2 上验证。其他 4.x 版本尚未验证。iOS 4.0.0 版本已在 App Store 上架。",
     "required_title": "需要 iPhone 客户端和游戏端插件",
     "required": "仅安装 iPhone 应用无法连接。请在每个需要操作的游戏项目中添加并启用免费服务器插件，然后运行游戏。需要 Mac、Godot 4.7.2、兼容的 iPhone 客户端，以及允许两台设备通信的同一局域网。游戏在 Mac 上运行，不能代替对原生 iOS 构建的测试。",
     "setup": "首次设置",
     "steps": [
       [
-        "复制免费插件",
-        "<p>获取<a href=\"https://github.com/shinriyo/GodotRemote/tree/develop/godot4\">开发版源码</a>，将整个 <code>godot4/addons/godot_remote</code> 文件夹复制到游戏的 <code>addons/</code> 文件夹中。</p><p>仓库根目录下的 <code>addons/</code> 是旧 Godot 3 版本，请勿复制该版本。</p>"
+        "下载免费插件",
+        "<p>从 <a href=\"https://store.godotengine.org/asset/shinriyo/shinriyo-remote-server/\">Godot Asset Store</a> 下载免费的服务器插件 ZIP，将 <code>addons/godot_remote</code> 解压到游戏项目。在项目设置 → 插件中启用 <strong>SHINRIYO Remote Server for Godot 4</strong>，然后重新运行游戏。</p><p>2026年10月28日已公开：<strong>4.0.0-dev</strong> 标记为 <strong>Unstable</strong>，最低和最高支持版本均为 Godot <strong>4.7.2</strong>。README 与插件显示名称已统一。这是游戏端插件，iPhone 客户端的发布状态另行说明。</p><details><summary>GitHub</summary><p>获取<a href=\"https://github.com/shinriyo/GodotRemote/tree/develop/godot4\">开发版源码</a>，将整个 <code>godot4/addons/godot_remote</code> 文件夹复制到游戏的 <code>addons/</code> 文件夹中。</p><p>仓库根目录下的 <code>addons/</code> 是旧 Godot 3 版本，请勿复制该版本。</p></details>"
       ],
       [
         "在 Godot 中启用插件",
-        "<p>打开您的游戏项目，在<strong>项目设置 → 插件</strong>中启用 <strong>Godot Remote 4</strong>，然后运行游戏。如果游戏已在运行，请停止后重新运行。</p>"
+        "<p>打开您的游戏项目，在<strong>项目设置 → 插件</strong>中启用 <strong>SHINRIYO Remote Server for Godot 4</strong>，然后运行游戏。如果游戏已在运行，请停止后重新运行。</p>"
       ],
       [
         "在同一局域网中打开 iPhone 应用",
@@ -129,18 +129,18 @@
         "<p>在列表中选择正在运行的游戏，然后点击 <strong>Connect</strong>。地址会自动填入。如果服务器设置了密码，请输入相同的密码。</p>"
       ]
     ],
-    "install_note": "保留游戏原有的 <code>project.godot</code>，无需额外添加节点。每个项目都需要单独安装插件。App Store 客户端尚未发布；如需自行构建 iPhone 客户端，请参阅 <a href=\"https://github.com/shinriyo/GodotRemote/blob/develop/godot4/README.md\">README</a>。",
+    "install_note": "保留游戏原有的 <code>project.godot</code>，无需额外添加节点。每个项目都需要单独安装插件。客户端可从 <a href=\"https://apps.apple.com/app/shinriyo-remote-for-godot-4/id6824852108\">App Store</a> 获取；如需自行构建 iPhone 客户端，请参阅 <a href=\"https://github.com/shinriyo/GodotRemote/blob/develop/godot4/README.md\">README</a>。",
     "controls_title": "连接后的操作",
     "controls": "点击或拖动游戏画面即可操作。连接后设置区域会隐藏：点击 <strong>Settings</strong> 打开设置，点击 <strong>Hide</strong> 返回，点击 <strong>Disconnect</strong> 断开连接。横屏游戏可将 iPhone 横放以获得更大画面。<strong>About / Licenses</strong> 可查看版权和许可证。应用进入后台会断开连接，返回后请重新连接。",
     "faq_title": "连接故障排查",
     "faq": [
       [
         "如何设置或取消连接密码？",
-        "在Mac上的游戏项目中启用Godot Remote 4。打开<strong>项目 → 项目设置 → 常规</strong>，启用高级设置，搜索<code>godot_remote/server</code>，设置<strong>Password</strong>（<code>godot_remote/server/password</code>）。停止并重新运行游戏，然后在iPhone客户端的<strong>Password</strong>栏中输入相同密码。默认留空，无需密码。取消密码时，清空服务器设置并重新运行游戏，同时清空客户端密码栏。重新启动应用后需要重新输入密码。通信和密码均未加密，请在可信的局域网内使用。"
+        "在Mac上的游戏项目中启用SHINRIYO Remote Server for Godot 4。打开<strong>项目 → 项目设置 → 常规</strong>，启用高级设置，搜索<code>godot_remote/server</code>，设置<strong>Password</strong>（<code>godot_remote/server/password</code>）。停止并重新运行游戏，然后在iPhone客户端的<strong>Password</strong>栏中输入相同密码。默认留空，无需密码。取消密码时，清空服务器设置并重新运行游戏，同时清空客户端密码栏。重新启动应用后需要重新输入密码。通信和密码均未加密，请在可信的局域网内使用。"
       ],
       [
         "可以从Godot官方商店获取插件吗？",
-        "目前请从上方GitHub源码复制插件。免费的游戏端插件可以向<a href=\"https://store.godotengine.org/\">Godot Asset Store</a>提交申请，但此说明不表示插件已上架或通过审核。申请需要准备仅包含Godot 4版的ZIP、README、LICENSE及版权声明、英文介绍、支持的版本以及客户端获取和连接说明。详情请参阅<a href=\"https://docs.godotengine.org/en/stable/community/asset_store/submitting_to_asset_store.html\">官方提交指南</a>。Godot插件商店与提供iPhone应用的Apple App Store是不同的平台。"
+        "<a href=\"https://store.godotengine.org/asset/shinriyo/shinriyo-remote-server/\">Godot Asset Store — SHINRIYO Remote Server for Godot 4</a>. 2026年10月28日已公开：<strong>4.0.0-dev</strong> 标记为 <strong>Unstable</strong>，最低和最高支持版本均为 Godot <strong>4.7.2</strong>。README 与插件显示名称已统一。这是游戏端插件，iPhone 客户端的发布状态另行说明。"
       ],
       [
         "Godot 插件列表中没有显示",
@@ -168,7 +168,7 @@
       ]
     ],
     "funding_title": "免费源码与支持开发的付费版本",
-    "funding": "源码和 Mac 插件以 MIT 许可证免费公开。我们正在准备一次性购买的 App Store 版本，无需手动构建或签名。收入将用于本应用的开发和维护，不属于对 Godot Engine 或原作者的捐款。",
+    "funding": "源码和 Mac 插件以 MIT 许可证免费公开。我们提供一次性购买的 App Store 版本，无需手动构建或签名。收入将用于本应用的开发和维护，不属于对 Godot Engine 或原作者的捐款。",
     "contact_title": "咨询与问题反馈",
     "contact_button": "通过 GitHub Issues 联系",
     "contact": "需要 GitHub 账户。请提供 Godot 版本、iPhone 型号和 iOS 版本、应用版本、复现步骤及错误信息。",
@@ -209,18 +209,18 @@
     "tagline": "Godot 개발자를 위한 비공식 도구",
     "hero": "Mac의 게임을 iPhone에서 직접 조작하며 테스트하세요.",
     "intro": "실행 중인 Godot 게임을 iPhone에 표시하고 탭과 드래그 입력을 Mac으로 보냅니다.",
-    "status": "Godot 4.7.2에서 동작을 확인했습니다. 다른 4.x 버전은 미검증입니다. 현재 개발 버전이며 App Store 버전은 아직 출시되지 않았습니다.",
+    "status": "Godot 4.7.2에서 동작을 확인했습니다. 다른 4.x 버전은 미검증입니다. iOS 4.0.0 버전이 App Store에 출시되었습니다.",
     "required_title": "iPhone 앱과 게임 측 애드온이 모두 필요합니다",
     "required": "iPhone 앱만 설치해서는 연결할 수 없습니다. 조작하려는 게임 프로젝트마다 무료 서버 애드온을 추가하고 활성화한 다음 게임을 실행하세요. Mac, Godot 4.7.2, 호환되는 iPhone 클라이언트, 두 기기 간 통신이 가능한 동일 LAN이 필요합니다. 게임은 Mac에서 실행되며, 이 도구는 네이티브 iOS 빌드 테스트를 대신하지 않습니다.",
     "setup": "처음 설정하기",
     "steps": [
       [
-        "무료 애드온 복사",
-        "<p><a href=\"https://github.com/shinriyo/GodotRemote/tree/develop/godot4\">개발 버전 소스</a>를 받아 <code>godot4/addons/godot_remote</code> 폴더 전체를 게임의 <code>addons/</code> 폴더에 복사하세요.</p><p>저장소 최상위의 <code>addons/</code>는 이전 Godot 3 버전입니다. 해당 버전을 복사하지 마세요.</p>"
+        "무료 애드온 다운로드",
+        "<p><a href=\"https://store.godotengine.org/asset/shinriyo/shinriyo-remote-server/\">Godot Asset Store</a>에서 무료 서버 애드온 ZIP을 다운로드하고 <code>addons/godot_remote</code>를 게임 프로젝트에 압축 해제합니다. 프로젝트 설정 → 플러그인에서 <strong>SHINRIYO Remote Server for Godot 4</strong>를 활성화한 후 게임을 다시 실행합니다.</p><p>2026년 10월 28일 공개: <strong>4.0.0-dev</strong>는 <strong>Unstable</strong> 버전이며 최소 및 최대 지원 버전은 Godot <strong>4.7.2</strong>입니다. README와 플러그인 표시 이름을 통일했습니다. 게임 측 애드온이며 iPhone 클라이언트의 출시 상태는 별도입니다.</p><details><summary>GitHub</summary><p><a href=\"https://github.com/shinriyo/GodotRemote/tree/develop/godot4\">개발 버전 소스</a>를 받아 <code>godot4/addons/godot_remote</code> 폴더 전체를 게임의 <code>addons/</code> 폴더에 복사하세요.</p><p>저장소 최상위의 <code>addons/</code>는 이전 Godot 3 버전입니다. 해당 버전을 복사하지 마세요.</p></details>"
       ],
       [
         "Godot에서 플러그인 활성화",
-        "<p>게임 프로젝트를 열고 <strong>프로젝트 설정 → 플러그인</strong>에서 <strong>Godot Remote 4</strong>를 활성화하세요. 게임을 실행하거나, 이미 실행 중이라면 중지 후 다시 실행하세요.</p>"
+        "<p>게임 프로젝트를 열고 <strong>프로젝트 설정 → 플러그인</strong>에서 <strong>SHINRIYO Remote Server for Godot 4</strong>를 활성화하세요. 게임을 실행하거나, 이미 실행 중이라면 중지 후 다시 실행하세요.</p>"
       ],
       [
         "같은 LAN에서 iPhone 앱 열기",
@@ -231,18 +231,18 @@
         "<p>목록에서 실행 중인 게임을 선택하고 <strong>Connect</strong>를 누르세요. 주소는 자동으로 입력됩니다. 서버에 비밀번호를 설정했다면 동일한 비밀번호를 입력하세요.</p>"
       ]
     ],
-    "install_note": "게임의 기존 <code>project.godot</code>를 유지하세요. 별도 노드를 추가할 필요가 없습니다. 애드온은 프로젝트마다 설치해야 합니다. App Store 클라이언트는 아직 출시되지 않았습니다. 직접 iPhone 클라이언트를 빌드하려면 <a href=\"https://github.com/shinriyo/GodotRemote/blob/develop/godot4/README.md\">README</a>를 참고하세요.",
+    "install_note": "게임의 기존 <code>project.godot</code>를 유지하세요. 별도 노드를 추가할 필요가 없습니다. 애드온은 프로젝트마다 설치해야 합니다. <a href=\"https://apps.apple.com/app/shinriyo-remote-for-godot-4/id6824852108\">App Store</a>에서 클라이언트를 받을 수 있습니다. 직접 iPhone 클라이언트를 빌드하려면 <a href=\"https://github.com/shinriyo/GodotRemote/blob/develop/godot4/README.md\">README</a>를 참고하세요.",
     "controls_title": "연결 후 조작",
     "controls": "게임 화면을 탭하거나 드래그하세요. 연결되면 설정 영역이 숨겨집니다. <strong>Settings</strong>로 설정을 열고, <strong>Hide</strong>로 돌아가며, <strong>Disconnect</strong>로 연결을 종료합니다. 가로형 게임은 iPhone을 가로로 돌리면 더 크게 볼 수 있습니다. <strong>About / Licenses</strong>에서 저작권과 라이선스를 확인할 수 있습니다. 앱이 백그라운드로 이동하면 연결이 끊어지므로 돌아온 뒤 다시 연결하세요.",
     "faq_title": "연결 문제 해결",
     "faq": [
       [
         "연결 비밀번호는 어떻게 설정하거나 해제하나요?",
-        "Mac의 게임 프로젝트에서 Godot Remote 4를 활성화합니다. <strong>프로젝트 → 프로젝트 설정 → 일반</strong>에서 고급 설정을 켜고 <code>godot_remote/server</code>를 검색합니다. <strong>Password</strong>(<code>godot_remote/server/password</code>)를 설정한 다음 게임을 중지하고 다시 실행합니다. iPhone 클라이언트의 <strong>Password</strong>에도 같은 값을 입력하고 연결합니다. 기본값은 빈칸이며 비밀번호가 필요 없습니다. 해제하려면 서버 설정을 비우고 게임을 다시 실행한 후 클라이언트 입력란도 비웁니다. 앱을 다시 시작하면 비밀번호를 다시 입력해야 합니다. 통신과 비밀번호는 암호화되지 않으므로 신뢰할 수 있는 LAN에서 사용하세요."
+        "Mac의 게임 프로젝트에서 SHINRIYO Remote Server for Godot 4를 활성화합니다. <strong>프로젝트 → 프로젝트 설정 → 일반</strong>에서 고급 설정을 켜고 <code>godot_remote/server</code>를 검색합니다. <strong>Password</strong>(<code>godot_remote/server/password</code>)를 설정한 다음 게임을 중지하고 다시 실행합니다. iPhone 클라이언트의 <strong>Password</strong>에도 같은 값을 입력하고 연결합니다. 기본값은 빈칸이며 비밀번호가 필요 없습니다. 해제하려면 서버 설정을 비우고 게임을 다시 실행한 후 클라이언트 입력란도 비웁니다. 앱을 다시 시작하면 비밀번호를 다시 입력해야 합니다. 통신과 비밀번호는 암호화되지 않으므로 신뢰할 수 있는 LAN에서 사용하세요."
       ],
       [
         "Godot 공식 스토어에서 받을 수 있나요?",
-        "현재는 위 GitHub 소스에서 애드온을 복사해 설치합니다. 무료 게임 측 애드온은 <a href=\"https://store.godotengine.org/\">Godot Asset Store</a>에 등록 신청할 수 있지만, 이 안내가 게시나 심사 승인을 의미하지는 않습니다. 신청 시 Godot 4 버전만 포함한 ZIP, README, LICENSE와 저작권 표시, 영어 소개, 지원 버전, 클라이언트 설치 및 연결 안내 등을 준비합니다. 자세한 내용은 <a href=\"https://docs.godotengine.org/en/stable/community/asset_store/submitting_to_asset_store.html\">공식 제출 가이드</a>를 참고하세요. Godot 애드온 스토어와 iPhone 앱을 제공하는 Apple App Store는 별개입니다."
+        "<a href=\"https://store.godotengine.org/asset/shinriyo/shinriyo-remote-server/\">Godot Asset Store — SHINRIYO Remote Server for Godot 4</a>. 2026년 10월 28일 공개: <strong>4.0.0-dev</strong>는 <strong>Unstable</strong> 버전이며 최소 및 최대 지원 버전은 Godot <strong>4.7.2</strong>입니다. README와 플러그인 표시 이름을 통일했습니다. 게임 측 애드온이며 iPhone 클라이언트의 출시 상태는 별도입니다."
       ],
       [
         "Godot 플러그인 목록에 표시되지 않아요",
@@ -270,7 +270,7 @@
       ]
     ],
     "funding_title": "무료 소스와 개발을 지원하는 유료 버전",
-    "funding": "소스 코드와 Mac 애드온은 MIT 라이선스로 무료 공개합니다. 직접 빌드하거나 서명할 필요 없이 한 번 구매하여 사용할 수 있는 App Store 버전을 준비 중입니다. 수익은 이 앱의 개발과 유지보수에 사용되며, Godot Engine이나 원작자에 대한 기부가 아닙니다.",
+    "funding": "소스 코드와 Mac 애드온은 MIT 라이선스로 무료 공개합니다. 직접 빌드하거나 서명할 필요 없이 한 번 구매하여 사용할 수 있는 App Store 버전을 제공합니다. 수익은 이 앱의 개발과 유지보수에 사용되며, Godot Engine이나 원작자에 대한 기부가 아닙니다.",
     "contact_title": "문의 및 버그 제보",
     "contact_button": "GitHub Issues로 문의",
     "contact": "GitHub 계정이 필요합니다. Godot 버전, iPhone 기종 및 iOS 버전, 앱 버전, 재현 단계, 오류 메시지를 알려주세요.",
@@ -311,18 +311,18 @@
     "tagline": "Công cụ không chính thức dành cho nhà phát triển Godot",
     "hero": "Thử chơi game trên Mac bằng iPhone.",
     "intro": "Xem game Godot đang chạy trên iPhone và gửi thao tác chạm, kéo trở lại máy Mac.",
-    "status": "Đã kiểm tra với Godot 4.7.2. Các phiên bản 4.x khác chưa được kiểm tra. Đây là bản đang phát triển; bản App Store chưa được phát hành.",
+    "status": "Đã kiểm tra với Godot 4.7.2. Các phiên bản 4.x khác chưa được kiểm tra. Phiên bản iOS 4.0.0 đã có trên App Store.",
     "required_title": "Cần cả ứng dụng iPhone và addon trong dự án game",
     "required": "Chỉ cài ứng dụng iPhone là chưa đủ để kết nối. Hãy thêm và bật addon máy chủ miễn phí trong từng dự án game muốn điều khiển, rồi chạy game. Bạn cần máy Mac, Godot 4.7.2, ứng dụng iPhone tương thích và cùng một mạng LAN cho phép hai thiết bị liên lạc. Game chạy trên Mac; công cụ này không thay thế việc kiểm thử bản dựng iOS gốc.",
     "setup": "Thiết lập lần đầu",
     "steps": [
       [
-        "Sao chép addon miễn phí",
-        "<p>Tải <a href=\"https://github.com/shinriyo/GodotRemote/tree/develop/godot4\">mã nguồn bản phát triển</a>. Sao chép toàn bộ thư mục <code>godot4/addons/godot_remote</code> vào thư mục <code>addons/</code> của game.</p><p>Thư mục <code>addons/</code> ở gốc kho mã là bản Godot 3 cũ. Không sao chép bản đó.</p>"
+        "Tải addon miễn phí",
+        "<p>Tải ZIP addon máy chủ miễn phí từ <a href=\"https://store.godotengine.org/asset/shinriyo/shinriyo-remote-server/\">Godot Asset Store</a>, rồi giải nén <code>addons/godot_remote</code> vào dự án trò chơi. Bật <strong>SHINRIYO Remote Server for Godot 4</strong> trong Project Settings → Plugins và chạy lại trò chơi.</p><p>Đã công bố ngày 28 tháng 10 năm 2026: phiên bản <strong>4.0.0-dev</strong> được đánh dấu <strong>Unstable</strong>, với phiên bản Godot tối thiểu và tối đa đều là <strong>4.7.2</strong>. README và tên hiển thị của plugin đã được thống nhất. Đây là addon phía trò chơi; trạng thái phát hành ứng dụng iPhone được nêu riêng.</p><details><summary>GitHub</summary><p>Tải <a href=\"https://github.com/shinriyo/GodotRemote/tree/develop/godot4\">mã nguồn bản phát triển</a>. Sao chép toàn bộ thư mục <code>godot4/addons/godot_remote</code> vào thư mục <code>addons/</code> của game.</p><p>Thư mục <code>addons/</code> ở gốc kho mã là bản Godot 3 cũ. Không sao chép bản đó.</p></details>"
       ],
       [
         "Bật plugin trong Godot",
-        "<p>Mở dự án game. Trong <strong>Project Settings → Plugins</strong>, bật <strong>Godot Remote 4</strong>. Chạy game; nếu game đang chạy, hãy dừng và chạy lại.</p>"
+        "<p>Mở dự án game. Trong <strong>Project Settings → Plugins</strong>, bật <strong>SHINRIYO Remote Server for Godot 4</strong>. Chạy game; nếu game đang chạy, hãy dừng và chạy lại.</p>"
       ],
       [
         "Mở ứng dụng iPhone trên cùng mạng LAN",
@@ -333,18 +333,18 @@
         "<p>Chọn game đang chạy trong danh sách, rồi nhấn <strong>Connect</strong>. Địa chỉ được điền tự động. Nếu đã đặt mật khẩu máy chủ, hãy nhập cùng mật khẩu đó.</p>"
       ]
     ],
-    "install_note": "Giữ nguyên tệp <code>project.godot</code> của game. Không cần thêm node. Cài addon cho từng dự án. Ứng dụng App Store chưa được phát hành; xem <a href=\"https://github.com/shinriyo/GodotRemote/blob/develop/godot4/README.md\">README</a> nếu muốn tự dựng ứng dụng iPhone.",
+    "install_note": "Giữ nguyên tệp <code>project.godot</code> của game. Không cần thêm node. Cài addon cho từng dự án. Ứng dụng đã có trên <a href=\"https://apps.apple.com/app/shinriyo-remote-for-godot-4/id6824852108\">App Store</a>; xem <a href=\"https://github.com/shinriyo/GodotRemote/blob/develop/godot4/README.md\">README</a> nếu muốn tự dựng ứng dụng iPhone.",
     "controls_title": "Thao tác sau khi kết nối",
     "controls": "Chạm hoặc kéo trên hình ảnh game. Phần cài đặt sẽ ẩn sau khi kết nối: nhấn <strong>Settings</strong> để mở, <strong>Hide</strong> để quay lại và <strong>Disconnect</strong> để ngắt kết nối. Xoay ngang iPhone để xem game nằm ngang với kích thước lớn hơn. <strong>About / Licenses</strong> hiển thị bản quyền và giấy phép. Ứng dụng sẽ ngắt kết nối khi chuyển sang nền; hãy kết nối lại khi quay về.",
     "faq_title": "Khắc phục sự cố kết nối",
     "faq": [
       [
         "Cách đặt hoặc xóa mật khẩu kết nối?",
-        "Bật Godot Remote 4 trong dự án trò chơi trên Mac. Mở <strong>Project → Project Settings → General</strong>, bật <strong>Advanced Settings</strong> và tìm <code>godot_remote/server</code>. Đặt <strong>Password</strong> (<code>godot_remote/server/password</code>), rồi dừng và chạy lại trò chơi. Nhập cùng mật khẩu vào ô <strong>Password</strong> trên iPhone trước khi kết nối. Mặc định để trống và không cần mật khẩu. Để xóa, để trống thiết lập trên máy chủ, chạy lại trò chơi và xóa ô mật khẩu trên ứng dụng khách. Cần nhập lại mật khẩu sau khi mở lại ứng dụng. Kết nối và mật khẩu không được mã hóa; chỉ sử dụng mạng LAN đáng tin cậy."
+        "Bật SHINRIYO Remote Server for Godot 4 trong dự án trò chơi trên Mac. Mở <strong>Project → Project Settings → General</strong>, bật <strong>Advanced Settings</strong> và tìm <code>godot_remote/server</code>. Đặt <strong>Password</strong> (<code>godot_remote/server/password</code>), rồi dừng và chạy lại trò chơi. Nhập cùng mật khẩu vào ô <strong>Password</strong> trên iPhone trước khi kết nối. Mặc định để trống và không cần mật khẩu. Để xóa, để trống thiết lập trên máy chủ, chạy lại trò chơi và xóa ô mật khẩu trên ứng dụng khách. Cần nhập lại mật khẩu sau khi mở lại ứng dụng. Kết nối và mật khẩu không được mã hóa; chỉ sử dụng mạng LAN đáng tin cậy."
       ],
       [
         "Có thể tải addon từ cửa hàng chính thức của Godot không?",
-        "Hiện tại, hãy sao chép addon từ mã nguồn GitHub được liên kết ở trên. Addon miễn phí phía trò chơi có thể được gửi lên <a href=\"https://store.godotengine.org/\">Godot Asset Store</a>; hướng dẫn này không có nghĩa là addon đã được đăng hoặc duyệt. Cần chuẩn bị ZIP chỉ chứa bản Godot 4, README, LICENSE và thông tin bản quyền, mô tả tiếng Anh, phiên bản hỗ trợ, cùng hướng dẫn cài đặt và kết nối ứng dụng khách. Xem <a href=\"https://docs.godotengine.org/en/stable/community/asset_store/submitting_to_asset_store.html\">hướng dẫn gửi chính thức</a>. Cửa hàng addon của Godot khác với Apple App Store dành cho ứng dụng iPhone."
+        "<a href=\"https://store.godotengine.org/asset/shinriyo/shinriyo-remote-server/\">Godot Asset Store — SHINRIYO Remote Server for Godot 4</a>. Đã công bố ngày 28 tháng 10 năm 2026: phiên bản <strong>4.0.0-dev</strong> được đánh dấu <strong>Unstable</strong>, với phiên bản Godot tối thiểu và tối đa đều là <strong>4.7.2</strong>. README và tên hiển thị của plugin đã được thống nhất. Đây là addon phía trò chơi; trạng thái phát hành ứng dụng iPhone được nêu riêng."
       ],
       [
         "Không thấy plugin trong Godot",
@@ -372,7 +372,7 @@
       ]
     ],
     "funding_title": "Mã nguồn miễn phí và bản trả phí hỗ trợ phát triển",
-    "funding": "Mã nguồn và addon Mac được công khai miễn phí theo giấy phép MIT. Chúng tôi đang chuẩn bị bản App Store mua một lần, không cần tự dựng hoặc ký ứng dụng. Doanh thu hỗ trợ việc phát triển và bảo trì ứng dụng này, không phải khoản quyên góp cho Godot Engine hay tác giả gốc.",
+    "funding": "Mã nguồn và addon Mac được công khai miễn phí theo giấy phép MIT. Chúng tôi cung cấp bản App Store mua một lần, không cần tự dựng hoặc ký ứng dụng. Doanh thu hỗ trợ việc phát triển và bảo trì ứng dụng này, không phải khoản quyên góp cho Godot Engine hay tác giả gốc.",
     "contact_title": "Liên hệ & Báo lỗi",
     "contact_button": "Liên hệ qua GitHub Issues",
     "contact": "Cần tài khoản GitHub. Vui lòng cung cấp phiên bản Godot, mẫu iPhone và phiên bản iOS, phiên bản ứng dụng, các bước tái hiện và thông báo lỗi.",
