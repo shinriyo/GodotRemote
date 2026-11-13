@@ -41,3 +41,7 @@ temp_folder_for_lib_copies/
 test.gd
 
 godot_remote_client/AssetsInSuperSecureAndUn1queF0lder/Textures/SVG/*.png
+
+# Godot 4 editor cache
+.godot/
+godot4/build/
