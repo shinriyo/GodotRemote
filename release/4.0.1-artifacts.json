@@ -1,0 +1,78 @@
+{
+  "version": "4.0.1",
+  "repository": "https://github.com/shinriyo/GodotRemote",
+  "source_commit": "ee6fe90bb80c43dc2e756c5daf0650c643e355cf",
+  "branch": "codex/release-ui-4.0.1",
+  "build_provenance": "Built from the source changes subsequently committed at source_commit; worktree was dirty during build. Only release documentation and generated-file ignore rules were added afterward.",
+  "scope": "UI update retaining the published TCP protocol. WebSocket development remains on develop.",
+  "android": {
+    "package": "org.godotremote.client4",
+    "artifact_manifest": {
+      "versionName": "4.0.1",
+      "versionCode": 3,
+      "minSdk": 24,
+      "targetSdk": 36,
+      "compileSdk": 36
+    },
+    "manifest_verification": "bundletool dump manifest",
+    "artifact": {
+      "path": "/Users/shinriyo/development/godot_proj/GodotRemote/godot4/build/releases/4.0.1/SHINRIYO-Remote-4.0.1-3.aab",
+      "size": 52388443,
+      "sha256": "9b84b24872acc6454dacde4efb608bcbf0ee844d45a69142f18b68b449a2a13f",
+      "custody": "local-only; external backup unverified"
+    },
+    "signing_certificate_sha256": "F5:A5:17:53:3B:10:10:E7:09:96:95:87:3B:6B:A1:FF:83:AE:60:88:0B:DD:31:7B:5D:CA:54:7D:9E:6A:01:D4",
+    "developer": "8724888411661161624",
+    "app": "4976036389070439774",
+    "track": "production",
+    "submission": "Submit changes for review confirmed 2026-11-14 about 20:46 JST. Console displays changes under review, with pre-review quick checks still running.",
+    "publication": "4.0.1 not yet confirmed public; previous 4.0.0 code 2 public since 2026-10-20",
+    "evidence": "/tmp/remote401-google-submitted.png"
+  },
+  "ios": {
+    "bundle": "com.shinriyo.godotremote4",
+    "app": "6824852108",
+    "team": "R8W4W3W2S5",
+    "ipa_manifest": {
+      "version": "4.0.1",
+      "build": "1",
+      "minimumOS": "15.0"
+    },
+    "artifact": {
+      "path": "/Users/shinriyo/development/godot_proj/GodotRemote/godot4/build/app-store-4.0.1/GodotRemote4.ipa",
+      "size": 26311094,
+      "sha256": "dea3b0b47c07d2d2cbea81c871e1ca7f1f846cf90b986f5a4701ba10b1756fda",
+      "custody": "local-only; external backup unverified"
+    },
+    "upload": "xcodebuild Upload succeeded 2026-11-14 18:43 JST",
+    "review_submission": "NOT submitted. Browser authentication expired; user re-login pending.",
+    "metadata": "4.0.1 draft created; new notes, screenshots and reviewer ZIP prepared locally but not yet applied.",
+    "previous_release": "4.0.0 build 4 Ready for Distribution confirmed in App Store Connect"
+  },
+  "review_demo": {
+    "path": "/Users/shinriyo/development/godot_proj/GodotRemote/godot4/build/releases/4.0.1/SHINRIYO-Remote-4.0.1-Review-Demo.zip",
+    "size": 7296,
+    "sha256": "c6bf4455eb6b2d7c45d93dcc6fe69f7ce54d327ebc6ca070b3c0bc96da1ff1c9",
+    "custody": "local-only; external backup unverified"
+  },
+  "validation": [
+    "Godot integration tests: failures 0",
+    "Godot mobile UI tests: portrait/landscape failures 0",
+    "iPhone simulator rendered UI inspected",
+    "iPad simulator rendered UI inspected; discovery works when only one simulator app binds its UDP port",
+    "No new physical-device test during this update"
+  ],
+  "build_commands": [
+    "Godot --headless --audio-driver Dummy --path <worktree>/godot4 --export-release Android build/<unsigned>.aab",
+    "Sign with existing ~/.android/shinriyo-remote/upload.jks, alias upload, password file; never commit secrets",
+    "Godot --headless --audio-driver Dummy --path <worktree>/godot4 --export-release iOS build/ios/GodotRemote4.zip",
+    "python3 godot4/scripts/inject_ios_discovery.py <export>/GodotRemote4",
+    "xcodebuild archive with official team and SHINRIYO Remote App Store 2026-11 profile",
+    "xcodebuild -exportArchive with manual signing and destination upload"
+  ],
+  "screenshots": {
+    "iphone": "godot4/build/releases/4.0.1/iphone401-ready.png",
+    "ipad": "godot4/build/releases/4.0.1/ipad401-final.png",
+    "method": "simctl, real simulator screenshots; Metal simulator-only pack, same UI source. No fresh physical-device test."
+  }
+}
