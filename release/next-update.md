@@ -1,7 +1,7 @@
 # モバイル更新 4.0.1（2026-11-14）
 
-- Google Play: 4.0.1 / versionCode 3 の製品版を審査送信済み。「審査中の変更」に表示。送信後の確認時点では事前クイックチェック中。公開は未確認。
-- iOS: 4.0.1 / build 1 の署名・アーカイブ・App Store Connectへのアップロード成功。4.0.1の提出準備中レコードあり。ブラウザーログインが失効し、再認証待ちのため審査提出は未完了。
+- Google Play: 4.0.1 / versionCode 3 の製品版を審査送信済み。「審査中の変更」に表示。事前クイックチェック完了後の「現在審査中」を確認。公開は未確認。
+- iOS: 4.0.1 / build 1 の署名・アーカイブ・App Store Connectへのアップロード成功。4.0.1の提出準備中レコードあり。許可された保存済み認証情報でSafariのAppleログインに成功。build 1、更新内容、審査手順、ZIPを保存済み。新iPhone/iPad画像もアップロード済み。旧画像除外の操作が自動承認レビューに拒否されたため、画像差し替えの明示許可を確認中。審査提出は未完了。
 - 既存公開版: iOS 4.0.0 build 4 は Ready for Distribution、Android 4.0.0 code 2 は2026-10-20から公開済み。
 
 ## ソースの分離
@@ -17,5 +17,5 @@
 - iOS IPAのmanifestで4.0.1 / build 1、bundle `com.shinriyo.godotremote4`、minimum iOS 15.0を確認。正式team `R8W4W3W2S5`で署名。
 - Godot統合テスト・縦横UIテスト: failures 0。iPhone/iPadシミュレーターで新UIの実描画を確認。今回の新たな実機検証は未実施。
 - 審査用ZIPのserver/link/input_codecは今回のTCPソースと一致。更新ZIP、英語審査手順、更新内容、新スクリーンショットを準備済み。
-- Apple再ログイン後: ビルド処理結果確認、build 1選択、What's New・レビュー注記・ZIP・新画像を適用し、審査へ提出する。
+- 残り: 画像差し替え許可後、旧画像を除いて新UI画像だけにし、Apple審査へ提出する。
 - 成果物とハッシュの詳細は申請ブランチの `release/4.0.1-artifacts.json`。
