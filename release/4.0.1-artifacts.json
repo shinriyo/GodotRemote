@@ -25,9 +25,9 @@
     "developer": "8724888411661161624",
     "app": "4976036389070439774",
     "track": "production",
-    "submission": "Submit changes for review confirmed 2026-11-14 about 20:46 JST. Console displays changes under review, with pre-review quick checks still running.",
+    "submission": "Console confirmed changes currently under review after quick checks completed, 2026-11-14.",
     "publication": "4.0.1 not yet confirmed public; previous 4.0.0 code 2 public since 2026-10-20",
-    "evidence": "/tmp/remote401-google-submitted.png"
+    "evidence": "/tmp/remote401-google-in-review.png"
   },
   "ios": {
     "bundle": "com.shinriyo.godotremote4",
@@ -45,8 +45,8 @@
       "custody": "local-only; external backup unverified"
     },
     "upload": "xcodebuild Upload succeeded 2026-11-14 18:43 JST",
-    "review_submission": "NOT submitted. Browser authentication expired; user re-login pending.",
-    "metadata": "4.0.1 draft created; new notes, screenshots and reviewer ZIP prepared locally but not yet applied.",
+    "review_submission": "NOT submitted. Authenticated successfully in Safari using the user-authorized saved Apple Developer credential. Awaiting explicit approval requested after automatic approval review rejected removing all current screenshots to replace them.",
+    "metadata": "4.0.1 build 1 selected and saved. What's New and review notes saved. SHINRIYO-Remote-4.0.1-Review-Demo.zip attached. New iPhone/iPad screenshots uploaded alongside inherited old screenshots; old screenshots still need removal.",
     "previous_release": "4.0.0 build 4 Ready for Distribution confirmed in App Store Connect"
   },
   "review_demo": {
