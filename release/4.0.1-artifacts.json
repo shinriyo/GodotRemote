@@ -45,9 +45,12 @@
       "custody": "local-only; external backup unverified"
     },
     "upload": "xcodebuild Upload succeeded 2026-11-14 18:43 JST",
-    "review_submission": "NOT submitted. Authenticated successfully in Safari using the user-authorized saved Apple Developer credential. Awaiting explicit approval requested after automatic approval review rejected removing all current screenshots to replace them.",
-    "metadata": "4.0.1 build 1 selected and saved. What's New and review notes saved. SHINRIYO-Remote-4.0.1-Review-Demo.zip attached. New iPhone/iPad screenshots uploaded alongside inherited old screenshots; old screenshots still need removal.",
-    "previous_release": "4.0.0 build 4 Ready for Distribution confirmed in App Store Connect"
+    "review_submission": "Submitted 2026-11-14 approximately 23:17 JST. App Store Connect confirmed 1 Item Submitted and 4.0.1 Waiting for Review.",
+    "metadata": "Build 1 selected. Updated release and review notes saved; review demo ZIP attached. With explicit user approval, inherited screenshots were removed from version 4.0.1 and replaced with one new UI screenshot each for iPhone and iPad. Public 4.0.0 and local files unchanged.",
+    "previous_release": "4.0.0 build 4 Ready for Distribution confirmed in App Store Connect",
+    "submission_id": "cc9fa852-02f7-45b7-9c50-9d82ac75b091",
+    "evidence": "/tmp/remote401-ios-submitted.png",
+    "publication": "Automatic release after approval; 4.0.1 not yet confirmed public."
   },
   "review_demo": {
     "path": "/Users/shinriyo/development/godot_proj/GodotRemote/godot4/build/releases/4.0.1/SHINRIYO-Remote-4.0.1-Review-Demo.zip",
