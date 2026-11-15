@@ -1,6 +1,8 @@
 # SHINRIYO Remote for Godot 4 — Godot 4.7.2向け
 
-[今後の開発予定：次回はUI改善、その次は音声転送](ROADMAP.md)
+[今後の開発予定](ROADMAP.md)
+
+> この `develop` ブランチには未リリースのWebSocket開発が含まれます。ストア版4.0.1はTCP方式を維持した別のソースです。ストア利用者は下記の無料公開アドオンを使用し、`develop` のアドオンと混在させないでください。
 
 Godot 4向けのサーバーアドオンと、新しいiPhone／Android／デスクトップクライアントです。標準GodotのGDScript APIで実装しているため、エンジン本体やC++ライブラリのビルドは不要です。Godot 4.7.2で動作確認済みです。他のGodot 4.xは未検証で、対応する最低バージョンは未確定です。
 
@@ -18,7 +20,7 @@ Godot 4向けのサーバーアドオンと、新しいiPhone／Android／デス
 - Macと同じLANで通信できるiPhone
 - iPhone用クライアント「SHINRIYO Remote for Godot 4」
 
-現在App Store版は未公開です。iPhone版を自分で用意する場合は、後述の「再ビルドと開発用インストール」を参照してください。サンプルで実機動作を確認していますが、個別ゲームの操作方法や性能は別途確認が必要です。
+[App Store版](https://apps.apple.com/jp/app/shinriyo-remote-for-godot-4/id6824852108)は公開済みです。2026年11月15日に日本の公開ストア情報で4.0.1を確認しました。iPhone版を自分で用意する場合は、後述の「再ビルドと開発用インストール」を参照してください。サンプルで実機動作を確認していますが、個別ゲームの操作方法や性能は別途確認が必要です。
 
 ### 2. ゲームにアドオンを入れる（初回だけ）
 
@@ -26,7 +28,7 @@ Godot 4向けのサーバーアドオンと、新しいiPhone／Android／デス
 2. ZIP内の **`addons/godot_remote` フォルダ全体**を、操作したいゲームの `project.godot` と同じ階層の `addons` 内へ展開します。既存ファイルがある場合は内容を確認してください。
 3. 「プロジェクト → プロジェクト設定 → プラグイン」で **SHINRIYO Remote Server for Godot 4** を有効にして、ゲームを再実行します。
 
-GitHubから手動導入する場合は、[developブランチ](https://github.com/shinriyo/GodotRemote/tree/develop)の `godot4/addons/godot_remote` フォルダ全体を同じ場所へコピーします。
+GitHubからストア版4.0.1用アドオンを手動導入する場合は、[4.0.1の提出ソース](https://github.com/shinriyo/GodotRemote/tree/ee6fe90bb80c43dc2e756c5daf0650c643e355cf/godot4/addons/godot_remote)のフォルダ全体を同じ場所へコピーします。`develop` のWebSocket版は未リリースの開発用で、ストア版4.0.1のTCPクライアント用ではありません。
 
 ```text
 あなたのゲーム/
@@ -91,6 +93,8 @@ GitHubから手動導入する場合は、[developブランチ](https://github.c
 通信は暗号化されていません。パスワードも平文で送られるため、初期状態では信頼できるローカルネットワークまたはUSBのADB転送で使用してください。グローバル公開する場合はVPNを優先し、直接公開する場合も強いパスワードとルーター側の接続制限を設定してください。
 
 ## Cloudflare Tunnelで外部から接続する
+
+**以下は `develop` のWebSocket開発版向けです。公開ストア版4.0.1はTCP方式で、HTTPSのトンネルURLには接続できません。**
 
 同じLANの外から接続する場合は、Colosseumで使用しているCloudflare Tunnel（`cloudflared`）を使います。Godot RemoteはWebSocket接続に対応しているため、Cloudflare Tunnelの公開ホスト名をiPhone側の接続先に入力できます。
 
@@ -256,7 +260,8 @@ GodotRemote.send_user_data("score", 100)
 | カスタム入力シーン転送、旧通知／統計UI、旧API互換 | 未移植 |
 | iPhone用アプリ | ARM64ビルド・開発用署名・iPhone 15 Pro Maxへのインストールとデモの実操作を確認 |
 | iPhone向けUI | 最大表示・設定切替・入力分離を含む24項目をヘッドレス検証。実機縦画面で長いゲーム名の表示・選択・接続を確認 |
-| App Store／TestFlight公開 | 未設定 |
+| App Store公開 | 日本の公開ストア情報で4.0.1を2026-11-15に確認。ストア版はTCP方式で、このdevelopのWebSocket版とは別 |
+| TestFlight配信 | 今回未確認 |
 
 ## ヘッドレス検証
 
@@ -294,4 +299,4 @@ iPhone 15 Pro MaxとMac上のGodot 4.7.2デモで、Bonjour一覧からの選択
 
 有料版はアプリの購入であり、寄付を募る仕組みではありません。無料のソース配布にも元作者の著作権表記とライセンスを保持します。
 
-現在は販売準備中です。App Store版は未公開です。販売前に、配布する版に対応したソースとアドオンを取得できることを確認します。公開後に使用する紹介文は [STORE_DESCRIPTION.md](STORE_DESCRIPTION.md) に用意しています。
+App Store版は公開済みです。4.0.1の対応ソースは [`ee6fe90`](https://github.com/shinriyo/GodotRemote/tree/ee6fe90bb80c43dc2e756c5daf0650c643e355cf)、成果物と提出時の検証記録は申請ブランチの [`release/4.0.1-artifacts.json`](https://github.com/shinriyo/GodotRemote/blob/codex/release-ui-4.0.1/release/4.0.1-artifacts.json)を参照してください。この記録は提出時点のもので、ストアの現在の配信状態とは区別してください。紹介文は [STORE_DESCRIPTION.md](STORE_DESCRIPTION.md) にあります。
