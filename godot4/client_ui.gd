@@ -12,12 +12,14 @@ var status := Label.new()
 var host := LineEdit.new()
 var port := SpinBox.new()
 var password := LineEdit.new()
+var _paste_target: LineEdit
 var connect_button := Button.new()
 var _active_pointers := {}
 var _safe_margin := MarginContainer.new()
 var settings_button := Button.new()
 var _settings_controls: Array[Control] = []
 var license_panel := PanelContainer.new()
+var _license_margin := MarginContainer.new()
 
 func _ready() -> void:
 	add_child(client)
@@ -45,33 +47,88 @@ func _ready() -> void:
 	discovery.servers_changed.connect(_servers_changed)
 	discovery.status_changed.connect(func(message): discovery_status.text = message)
 	add_child(discovery)
-	var toolbar := HFlowContainer.new()
+	var toolbar := VBoxContainer.new()
 	layout.add_child(toolbar)
-	host.placeholder_text = "PC IP address"
+	var host_row := HBoxContainer.new()
+	toolbar.add_child(host_row)
+	var host_label := Label.new()
+	host_label.text = "Host"
+	host_label.custom_minimum_size.x = 92
+	host_row.add_child(host_label)
+	host.placeholder_text = "PC IP or hostname"
+	host.clear_button_enabled = true
 	host.text = "" if OS.has_feature("mobile") else "127.0.0.1"
-	host.custom_minimum_size.x = 200
-	toolbar.add_child(host)
-	port.min_value = 1024
+	host.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	host.focus_entered.connect(func(): _paste_target = host)
+	host_row.add_child(host)
+	var host_paste_button := Button.new()
+	host_paste_button.text = "Paste"
+	host_paste_button.pressed.connect(func(): _paste_into_field(host))
+	host_row.add_child(host_paste_button)
+	var port_row := HBoxContainer.new()
+	toolbar.add_child(port_row)
+	var port_label := Label.new()
+	port_label.text = "Port"
+	port_label.custom_minimum_size.x = 92
+	port_row.add_child(port_label)
+	port.min_value = 1
 	port.max_value = 65535
 	port.value = 22766
-	toolbar.add_child(port)
+	port.custom_minimum_size.x = 110
+	port.get_line_edit().virtual_keyboard_type = LineEdit.KEYBOARD_TYPE_NUMBER
+	port_row.add_child(port)
+	var password_row := HBoxContainer.new()
+	toolbar.add_child(password_row)
+	var password_label := Label.new()
+	password_label.text = "Password"
+	password_label.custom_minimum_size.x = 92
+	password_row.add_child(password_label)
 	password.placeholder_text = "Password"
+	password.clear_button_enabled = true
 	password.secret = true
-	password.custom_minimum_size.x = 140
-	toolbar.add_child(password)
+	password.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	password.focus_entered.connect(func(): _paste_target = password)
+	password_row.add_child(password)
+	var password_visibility_button := Button.new()
+	var eye_icon: Texture2D = load("res://eye.svg")
+	var eye_off_icon: Texture2D = load("res://eye_off.svg")
+	password_visibility_button.icon = eye_icon
+	password_visibility_button.custom_minimum_size.x = 52
+	password_visibility_button.tooltip_text = "Show or hide password"
+	password_visibility_button.pressed.connect(func():
+		password.secret = not password.secret
+		password_visibility_button.icon = eye_icon if password.secret else eye_off_icon
+	)
+	password_row.add_child(password_visibility_button)
+	var password_paste_button := Button.new()
+	password_paste_button.text = "Paste"
+	password_paste_button.pressed.connect(func(): _paste_into_field(password))
+	password_row.add_child(password_paste_button)
+	var action_row := HBoxContainer.new()
+	toolbar.add_child(action_row)
 	connect_button.text = "Connect"
+	connect_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	connect_button.icon = load("res://connect.svg")
+	connect_button.modulate = Color("#86e6ad")
 	connect_button.pressed.connect(_connect_pressed)
-	toolbar.add_child(connect_button)
+	action_row.add_child(connect_button)
 	var disconnect_button := Button.new()
 	disconnect_button.text = "Disconnect"
+	disconnect_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	disconnect_button.icon = load("res://disconnect.svg")
+	disconnect_button.modulate = Color("#f28b8b")
+	disconnect_button.hide()
 	disconnect_button.pressed.connect(func(): client.disconnect_from_host())
-	toolbar.add_child(disconnect_button)
+	action_row.add_child(disconnect_button)
 	var licenses_button := Button.new()
-	licenses_button.text = "About / Licenses"
-	licenses_button.custom_minimum_size.y = 48
+	licenses_button.text = "About"
+	licenses_button.tooltip_text = "App information and licenses"
+	licenses_button.flat = true
+	licenses_button.add_theme_font_size_override("font_size", 14)
+	licenses_button.custom_minimum_size = Vector2(64, 44)
+	licenses_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	licenses_button.pressed.connect(func(): license_panel.show(); get_viewport().gui_release_focus())
-	toolbar.add_child(licenses_button)
-	status.text = "Enter the Mac/PC IP address on the same Wi-Fi."
+	status.text = "Enter the Mac/PC address on the same local network."
 	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	layout.add_child(status)
 	screen.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -79,7 +136,8 @@ func _ready() -> void:
 	screen.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	screen.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	layout.add_child(screen)
-	_settings_controls.assign([server_picker, discovery_status, toolbar, status])
+	layout.add_child(licenses_button)
+	_settings_controls.assign([server_picker, discovery_status, toolbar, status, licenses_button])
 	settings_button.text = "Settings"
 	settings_button.custom_minimum_size = Vector2(96, 48)
 	settings_button.size = Vector2(96, 48)
@@ -87,26 +145,41 @@ func _ready() -> void:
 	settings_button.hide()
 	settings_button.pressed.connect(func(): _show_settings(not server_picker.visible))
 	add_child(settings_button)
-	for control in [host, port, password, connect_button, disconnect_button]:
+	for control in [host, host_paste_button, port, password, password_visibility_button, password_paste_button, connect_button, disconnect_button]:
 		control.custom_minimum_size.y = 48
 	var saved := ConfigFile.new()
 	if saved.load("user://connection.cfg") == OK:
 		host.text = saved.get_value("connection", "host", host.text)
 		port.value = saved.get_value("connection", "port", port.value)
-	client.connected.connect(func(): status.text = "Connected — waiting for video"; connect_button.disabled = false; _show_settings(false))
-	client.disconnected.connect(func(reason): status.text = reason; screen.texture = null; _active_pointers.clear(); connect_button.disabled = false; _show_settings(true))
+	client.connected.connect(func():
+		status.text = "Connected — waiting for video"
+		connect_button.hide()
+		disconnect_button.show()
+		_show_settings(false)
+	)
+	client.disconnected.connect(func(reason):
+		status.text = reason
+		screen.texture = null
+		_active_pointers.clear()
+		disconnect_button.hide()
+		connect_button.show()
+		connect_button.disabled = false
+		_show_settings(true)
+	)
 	client.frame_received.connect(_frame_received)
 	_build_license_panel()
 
 func _build_license_panel() -> void:
 	add_child(license_panel)
 	license_panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	var margin := MarginContainer.new()
-	license_panel.add_child(margin)
+	var background := StyleBoxFlat.new()
+	background.bg_color = Color("101d32")
+	license_panel.add_theme_stylebox_override("panel", background)
+	license_panel.add_child(_license_margin)
 	for edge in ["left", "right", "top", "bottom"]:
-		margin.add_theme_constant_override("margin_" + edge, 24)
+		_license_margin.add_theme_constant_override("margin_" + edge, 24)
 	var column := VBoxContainer.new()
-	margin.add_child(column)
+	_license_margin.add_child(column)
 	var heading := Label.new()
 	heading.text = ProjectSettings.get_setting("application/config/name")
 	heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -117,6 +190,11 @@ func _build_license_panel() -> void:
 	notices.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	notices.text = preload("res://license_notices.gd").full_text()
 	column.add_child(notices)
+	var privacy := Button.new()
+	privacy.text = "Privacy Policy"
+	privacy.custom_minimum_size.y = 48
+	privacy.pressed.connect(func(): OS.shell_open("https://shinriyo-remote.netlify.app/privacy-en.html"))
+	column.add_child(privacy)
 	var close := Button.new()
 	close.text = "Close"
 	close.custom_minimum_size.y = 48
@@ -135,8 +213,11 @@ func _show_settings(show_panel: bool) -> void:
 	DisplayServer.virtual_keyboard_hide()
 
 func _connect_pressed() -> void:
+	if "://" in host.text:
+		status.text = "Use your Mac/PC local IP address, not a web URL."
+		return
 	if host.text.strip_edges().is_empty():
-		status.text = "Enter the Mac/PC IP address first."
+		status.text = "Enter the Mac/PC IP address or hostname first."
 		return
 	var saved := ConfigFile.new()
 	saved.set_value("connection", "host", host.text.strip_edges())
@@ -147,6 +228,16 @@ func _connect_pressed() -> void:
 	connect_button.disabled = error == OK
 	get_viewport().gui_release_focus()
 	DisplayServer.virtual_keyboard_hide()
+
+func _paste_into_field(field: LineEdit) -> void:
+	var clipboard := DisplayServer.clipboard_get()
+	if clipboard.is_empty():
+		status.text = "Clipboard is empty."
+		return
+	field.text = clipboard
+	field.caret_column = field.text.length()
+	_paste_target = field
+	status.text = "Pasted."
 
 func _frame_received(image: Image) -> void:
 	if screen.texture is ImageTexture and screen.texture.get_size() == Vector2(image.get_size()):
@@ -205,10 +296,10 @@ func _update_safe_area() -> void:
 		var safe := Rect2(DisplayServer.get_display_safe_area())
 		var window_size := Vector2(DisplayServer.window_get_size())
 		insets = safe_area_insets(safe, window_size, size)
-	license_panel.offset_left = insets.x
-	license_panel.offset_top = insets.y
-	license_panel.offset_right = -insets.z
-	license_panel.offset_bottom = -insets.w
+	_license_margin.add_theme_constant_override("margin_left", int(insets.x) + 24)
+	_license_margin.add_theme_constant_override("margin_top", int(insets.y) + 24)
+	_license_margin.add_theme_constant_override("margin_right", int(insets.z) + 24)
+	_license_margin.add_theme_constant_override("margin_bottom", int(insets.w) + 24)
 	var padding := 8 if server_picker.visible else 0
 	_safe_margin.add_theme_constant_override("margin_left", int(insets.x) + padding)
 	_safe_margin.add_theme_constant_override("margin_top", int(insets.y) + (60 if server_picker.visible and client.authenticated else padding))

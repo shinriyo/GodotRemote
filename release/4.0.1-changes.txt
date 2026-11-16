@@ -1,0 +1,1 @@
+Improved the connection screen with clearer Host, Port and Password labels, easier paste controls, and a larger Connect button. About and license information now take less space. Compatible with the existing free server addon.

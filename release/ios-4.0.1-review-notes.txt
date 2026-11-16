@@ -1,0 +1,11 @@
+Version 4.0.1 improves the connection screen with clearer Host, Port and Password labels, adjacent paste controls, a larger Connect button, and a smaller About / Licenses footer. Compatible with the existing free server addon.
+
+Review setup:
+1. Extract the attached SHINRIYO-Remote-4.0.1-Review-Demo.zip on a Mac. This is a Godot project, not a standalone Mac app. Install Godot 4.7.2 from https://godotengine.org/download/macos/ and import project.godot.
+2. Press F5 to run the demo. Connect the iPhone/iPad and Mac to the same local network.
+3. Open this app and allow Local Network access. Select the discovered demo and tap Connect. Alternatively enter the Mac LAN IP address, port 22766, and leave Password empty.
+4. Touch the streamed green circle to move it. The game runs on the Mac; the app displays frames and sends input.
+
+No login, subscription, or in-app purchase is needed. No remote code is downloaded or executed on the device. The attached demo has no audio or mature content.
+Support: https://shinriyo-remote.netlify.app/index-en.html
+Source: https://github.com/shinriyo/GodotRemote/tree/codex/release-ui-4.0.1

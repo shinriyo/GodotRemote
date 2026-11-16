@@ -45,3 +45,6 @@ godot_remote_client/AssetsInSuperSecureAndUn1queF0lder/Textures/SVG/*.png
 # Godot 4 editor cache
 .godot/
 godot4/build/
+
+# Generated Godot Android Gradle template
+godot4/android/
